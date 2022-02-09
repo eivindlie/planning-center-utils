@@ -12,7 +12,7 @@ export const People = () => {
   return (
     <ul>
       {people.map((person) => (
-        <li>
+        <li key={person.id}>
           {person.attributes.first_name}{" "}
           {person.attributes.middle_name
             ? `${person.attributes.middle_name} `

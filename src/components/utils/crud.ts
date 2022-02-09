@@ -1,8 +1,20 @@
 import { getToken } from "./auth";
 
 export const get = async (url: string): Promise<any> => {
-  const response = await sendRequest(url);
-  return (await response.json()).data;
+  let response = await sendRequest(url);
+  let responseContent = await response.json();
+  const data = responseContent.data as any[];
+
+  while (responseContent.meta.next) {
+    const sep = url.includes("?") ? "&" : "?";
+    response = await sendRequest(
+      `${url}${sep}offset=${responseContent.meta.next.offset}`
+    );
+    responseContent = await response.json();
+    data.push(...responseContent.data);
+  }
+
+  return data;
 };
 
 const sendRequest = async (
