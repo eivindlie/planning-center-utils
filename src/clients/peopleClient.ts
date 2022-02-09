@@ -1,5 +1,5 @@
 import { IPerson } from "../types/contractTypes";
-import { get } from "../components/utils/crud";
+import { get } from "../utils/crud";
 
 const BASE_URL = "https://api.planningcenteronline.com/people/v2";
 

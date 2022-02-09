@@ -7,7 +7,7 @@ import {
   isSignedIn,
   REDIRECT_PATH,
   signIn,
-} from "./components/utils/auth";
+} from "./utils/auth";
 
 if (window.location.pathname.startsWith(REDIRECT_PATH)) {
   handle_callback();
