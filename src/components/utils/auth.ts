@@ -1,4 +1,4 @@
-import { ITokenResponse } from "../types/auth";
+import { ITokenResponse } from "../../types/auth";
 
 export const REDIRECT_PATH = `/oauth/callback`;
 
