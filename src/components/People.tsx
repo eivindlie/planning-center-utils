@@ -12,9 +12,6 @@ export const People = () => {
     getPeople().then((result) => setPeople(result));
   }, []);
 
-  console.log(people);
-
-  const classes = useStyles();
   return (
     <ul>
       {people.map((person) => (
