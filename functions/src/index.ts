@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import * as cors from "cors";
 
 const BASE_URL = "https://api.planningcenteronline.com/oauth";
-const SCOPE = "people";
+const SCOPE = "people services";
 const REDIRECT_URI =
   "https://us-central1-planning-center-utilities.cloudfunctions.net/redirect";
 

@@ -2,6 +2,7 @@ import { createUseStyles } from "react-jss";
 import { People } from ".";
 import { COLORS } from "../style/variables";
 import { NavMenu } from "./NavMenu";
+import { Plans } from "./Plans";
 
 const useStyles = createUseStyles({
   app: {
@@ -23,6 +24,7 @@ const App = () => {
     <div className={classes.app}>
       <NavMenu />
       <main className={classes.content}>
+        <Plans />
         <People />
       </main>
     </div>

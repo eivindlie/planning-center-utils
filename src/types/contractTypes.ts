@@ -12,3 +12,16 @@ export interface IPersonAttributes {
   last_name: string;
   child: boolean;
 }
+
+export interface IPlan {
+  type: string;
+  id: string;
+  attributes: IPlanAttributes;
+}
+
+export interface IPlanAttributes {
+  created_at: "string";
+  updated_at: "string";
+  title: string;
+  sort_date: string;
+}
