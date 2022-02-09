@@ -1,4 +1,4 @@
-export interface IPerson {
+export interface IApiPerson {
   type: string;
   id: string;
   attributes: IPersonAttributes;

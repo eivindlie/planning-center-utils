@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPeople } from "../clients/peopleClient";
-import { IPerson } from "../types/contractTypes";
+import { IPerson } from "../types";
 
 export const People = () => {
   const [people, setPeople] = useState<IPerson[]>([]);
@@ -13,11 +13,8 @@ export const People = () => {
     <ul>
       {people.map((person) => (
         <li key={person.id}>
-          {person.attributes.first_name}{" "}
-          {person.attributes.middle_name
-            ? `${person.attributes.middle_name} `
-            : ""}
-          {person.attributes.last_name}
+          {person.firstName} {person.middleName ? `${person.middleName} ` : ""}
+          {person.lastName}
         </li>
       ))}
     </ul>
