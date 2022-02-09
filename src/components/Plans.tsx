@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPlansBetween } from "../clients/serviceClient";
-import { IPlan } from "../types/contractTypes";
+import { IPlan } from "../types";
 
 export const Plans = () => {
   const [plans, setPlans] = useState<IPlan[]>([]);
@@ -15,7 +15,7 @@ export const Plans = () => {
     <ul>
       {plans.map((plan) => (
         <li key={plan.id}>
-          {plan.attributes.sort_date} {plan.attributes.title}
+          {plan.sortDate.toLocaleDateString()}: {plan.title}
         </li>
       ))}
     </ul>

@@ -13,7 +13,7 @@ export interface IPersonAttributes {
   child: boolean;
 }
 
-export interface IPlan {
+export interface IApiPlan {
   type: string;
   id: string;
   attributes: IPlanAttributes;
