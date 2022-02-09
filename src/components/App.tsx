@@ -1,13 +1,18 @@
 import { createUseStyles } from "react-jss";
 import { People } from ".";
 import { COLORS } from "../style/variables";
+import { NavMenu } from "./NavMenu";
 
 const useStyles = createUseStyles({
   app: {
     background: COLORS.background,
     color: COLORS.foreground,
-    padding: "20px",
-    minHeight: "100vh",
+    height: "100vh",
+    display: "flex",
+  },
+  content: {
+    flexGrow: 1,
+    overflowY: "auto",
   },
 });
 
@@ -15,9 +20,12 @@ const App = () => {
   const classes = useStyles();
 
   return (
-    <main className={classes.app}>
-      <People />
-    </main>
+    <div className={classes.app}>
+      <NavMenu />
+      <main className={classes.content}>
+        <People />
+      </main>
+    </div>
   );
 };
 
