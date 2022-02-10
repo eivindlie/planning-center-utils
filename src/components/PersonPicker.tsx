@@ -62,7 +62,10 @@ export const PersonPicker = ({ onPersonSelected }: IProps) => {
           className={classes.input}
           onKeyDown={onKeyDown}
           value={query}
-          onInput={(e) => setQuery(e.currentTarget.value)}
+          onInput={(e) => {
+            setQuery(e.currentTarget.value);
+            setPeople([]);
+          }}
         />
       </div>
 
