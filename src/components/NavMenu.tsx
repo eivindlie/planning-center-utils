@@ -18,6 +18,7 @@ export const NavMenu = () => {
   const classes = useStyles();
   return (
     <nav className={classes.nav}>
+      <NavElement href="/teams">Teams</NavElement>
       <NavElement href="/blockout">Blockout</NavElement>
     </nav>
   );

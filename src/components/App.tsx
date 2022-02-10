@@ -1,9 +1,7 @@
 import { createUseStyles } from "react-jss";
-import { People } from ".";
+import { Routes } from "../routes";
 import { COLORS } from "../style/variables";
 import { NavMenu } from "./NavMenu";
-import { PersonPicker } from "./PersonPicker";
-import { Spinner } from "./Spinner";
 
 const useStyles = createUseStyles({
   app: {
@@ -26,7 +24,7 @@ const App = () => {
     <div className={classes.app}>
       <NavMenu />
       <main className={classes.content}>
-        <PersonPicker />
+        <Routes />
       </main>
     </div>
   );
