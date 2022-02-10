@@ -4,4 +4,5 @@ export const COLORS = {
   foregroundHighlight: "#fff",
   border: "#333",
   borderHighlight: "#555",
+  elementBackground: "#bbb",
 };

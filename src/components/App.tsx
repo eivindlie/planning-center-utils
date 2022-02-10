@@ -2,7 +2,8 @@ import { createUseStyles } from "react-jss";
 import { People } from ".";
 import { COLORS } from "../style/variables";
 import { NavMenu } from "./NavMenu";
-import { Plans } from "./Plans";
+import { PersonPicker } from "./PersonPicker";
+import { Spinner } from "./Spinner";
 
 const useStyles = createUseStyles({
   app: {
@@ -14,6 +15,7 @@ const useStyles = createUseStyles({
   content: {
     flexGrow: 1,
     overflowY: "auto",
+    padding: "20px",
   },
 });
 
@@ -24,8 +26,7 @@ const App = () => {
     <div className={classes.app}>
       <NavMenu />
       <main className={classes.content}>
-        <Plans />
-        <People />
+        <PersonPicker />
       </main>
     </div>
   );
