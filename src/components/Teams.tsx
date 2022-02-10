@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
   },
 });
 
-const LOCALSTORAGE_TEAMS_KEY = "planningcenter.teams";
+export const LOCALSTORAGE_TEAMS_KEY = "planningcenter.teams";
 
 export const Teams = () => {
   const [teams, setTeams] = useState<ITeam[]>([]);

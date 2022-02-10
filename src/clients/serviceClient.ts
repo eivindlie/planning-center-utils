@@ -1,5 +1,5 @@
-import { IPlan } from "../types";
-import { IApiPlan } from "../types/contractTypes";
+import { IBlockoutDate, IPlan } from "../types";
+import { IApiBlockoutDate, IApiPlan } from "../types/contractTypes";
 import { get } from "../utils/crud";
 
 const BASE_URL = "https://api.planningcenteronline.com/services/v2";
@@ -32,3 +32,20 @@ export const getPlansBetween = async (
     (plan) => plan.sortDate >= from && plan.sortDate <= to
   );
 };
+
+export const getBlockoutDatesForPerson = async (
+  personId: string
+): Promise<IBlockoutDate[]> => {
+  const result = (await get(
+    `${BASE_URL}/people/${personId}/blockout_dates`
+  )) as IApiBlockoutDate[];
+
+  return result.map(mapBlockoutDate);
+};
+
+const mapBlockoutDate = (blockoutDate: IApiBlockoutDate): IBlockoutDate => ({
+  id: blockoutDate.id,
+  reason: blockoutDate.attributes.reason,
+  startsAt: new Date(blockoutDate.attributes.starts_at),
+  endsAt: new Date(blockoutDate.attributes.ends_at),
+});

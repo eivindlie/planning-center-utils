@@ -25,3 +25,19 @@ export interface IPlanAttributes {
   title: string;
   sort_date: string;
 }
+
+export interface IApiBlockoutDate {
+  id: string;
+  attributes: IBlockoutDateAttributes;
+}
+
+export interface IBlockoutDateAttributes {
+  group_identifier: string;
+  reason: string;
+  time_zone: string;
+  share: boolean;
+  starts_at: string;
+  ends_at: string;
+  starts_at_utc: string;
+  ends_at_utc: string;
+}

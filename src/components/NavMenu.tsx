@@ -19,7 +19,7 @@ export const NavMenu = () => {
   return (
     <nav className={classes.nav}>
       <NavElement href="/teams">Teams</NavElement>
-      <NavElement href="/blockout">Blockout</NavElement>
+      <NavElement href="/blockouts">Blockout</NavElement>
     </nav>
   );
 };

@@ -26,3 +26,15 @@ export interface ITeamMember {
   id: string;
   fullName: string;
 }
+
+export interface IBlockoutDate {
+  id: string;
+  reason: string;
+  startsAt: Date;
+  endsAt: Date;
+}
+
+export interface ITeamMemberWithBlockoutDates {
+  member: ITeamMember;
+  blockoutDates: IBlockoutDate[];
+}
