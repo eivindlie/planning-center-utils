@@ -40,7 +40,7 @@ export const TeamBlockouts = ({ teamName, teamMembers, plans }: IProps) => {
           <tr>
             <th className={classes.nameCell}></th>
             {plans.map((plan) => (
-              <th id={plan.id}>{plan.sortDate.toLocaleDateString()}</th>
+              <th key={plan.id}>{plan.sortDate.toLocaleDateString()}</th>
             ))}
           </tr>
         </thead>
@@ -50,7 +50,7 @@ export const TeamBlockouts = ({ teamName, teamMembers, plans }: IProps) => {
               <td className={classes.nameCell}>{member.member.fullName}</td>
               {plans.map((plan) => (
                 <td
-                  id={plan.id}
+                  key={plan.id}
                   className={
                     member.blockoutDates.some(
                       (blockoutDate) =>
