@@ -95,15 +95,13 @@ export const Teams = () => {
       </div>
       <div className={classes.teamPicker}>
         {teams.map((team) => (
-          <button
-            className={`${classes.button} ${
-              team === activeTeam ? classes.activeButton : ""
-            }`}
+          <Button
+            type={team === activeTeam ? "primary" : "secondary"}
             key={team.id}
             onClick={() => setActiveTeam(team)}
           >
             {team.name}
-          </button>
+          </Button>
         ))}
       </div>
       <ul>

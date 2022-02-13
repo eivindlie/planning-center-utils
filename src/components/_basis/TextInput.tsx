@@ -20,18 +20,32 @@ export interface IProps {
   value: string;
   onInput?: FormEventHandler<HTMLInputElement>;
   onKeyPress?: KeyboardEventHandler<HTMLInputElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
   onChange?: FormEventHandler<HTMLInputElement>;
+  placeholder?: string;
+  id?: string;
 }
-export const TextInput = ({ value, onChange, onInput, onKeyPress }: IProps) => {
+export const TextInput = ({
+  value,
+  onChange,
+  onInput,
+  onKeyPress,
+  onKeyDown,
+  placeholder,
+  id,
+}: IProps) => {
   const classes = useStyles();
   return (
     <input
+      id={id}
       type="text"
       className={classes.input}
       value={value}
       onInput={onInput}
       onChange={onChange}
       onKeyPress={onKeyPress}
+      onKeyDown={onKeyDown}
+      placeholder={placeholder}
     />
   );
 };
