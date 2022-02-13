@@ -8,7 +8,7 @@ const REDIRECT_URI =
   "https://us-central1-planning-center-utilities.cloudfunctions.net/redirect";
 
 const CORS_WHITELIST = [
-  "https://localhost:3000",
+  "http://localhost:3000",
   "https://planning-center.andreassen.info",
 ];
 
