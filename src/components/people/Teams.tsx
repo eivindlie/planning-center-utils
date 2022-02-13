@@ -81,6 +81,14 @@ export const Teams = () => {
       return;
     }
 
+    if (
+      !window.confirm(
+        `Er du sikker på at du vil fjerne ${member.fullName} fra ${activeTeam.name}?`
+      )
+    ) {
+      return;
+    }
+
     const team = {
       ...activeTeam,
       members: activeTeam?.members.filter((m) => m.id !== member.id),
@@ -108,6 +116,11 @@ export const Teams = () => {
   };
 
   const removeTeam = (team: ITeam) => {
+    if (
+      !window.confirm(`Er du sikker på at du vil slette teamet ${team.name}?`)
+    ) {
+      return;
+    }
     setTeams(
       [...teams.filter((t) => t.id !== team.id)].sort((a, b) => a.id - b.id)
     );
