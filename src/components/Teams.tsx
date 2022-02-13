@@ -15,6 +15,9 @@ const useStyles = createUseStyles({
     display: "flex",
     gap: "10px",
   },
+  memberTable: {
+    width: "fit-content",
+  },
   button: {
     border: "none",
   },
@@ -66,6 +69,24 @@ export const Teams = () => {
     );
   };
 
+  const removeTeamMember = (member: ITeamMember) => {
+    if (!activeTeam) {
+      return;
+    }
+
+    const team = {
+      ...activeTeam,
+      members: activeTeam?.members.filter((m) => m.id !== member.id),
+    };
+    setActiveTeam(team);
+    setTeams(
+      [...teams.filter((t) => t.id !== team.id), team].sort(
+        (a, b) => a.id - b.id
+      )
+    );
+    saveTeams();
+  };
+
   const saveTeams = () => {
     localStorage.setItem(LOCALSTORAGE_TEAMS_KEY, JSON.stringify(teams));
   };
@@ -104,11 +125,20 @@ export const Teams = () => {
           </Button>
         ))}
       </div>
-      <ul>
-        {activeTeam?.members.map((member) => (
-          <li key={member.id}>{member.fullName}</li>
-        ))}
-      </ul>
+      <table className={classes.memberTable}>
+        <tbody>
+          {activeTeam?.members.map((member) => (
+            <tr key={member.id}>
+              <td>{member.fullName}</td>
+              <td>
+                <Button onClick={() => removeTeamMember(member)} type="danger">
+                  <i className="las la-trash"></i>
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <PersonPicker onPersonSelected={(person) => addTeamMember(person)} />
     </section>
   );

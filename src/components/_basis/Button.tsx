@@ -2,7 +2,7 @@ import { MouseEventHandler, ReactChild } from "react";
 import { createUseStyles } from "react-jss";
 import { COLORS } from "../../style/variables";
 
-type ButtonType = "primary" | "secondary";
+type ButtonType = "primary" | "secondary" | "danger";
 interface IStyleProps {
   type: ButtonType;
 }
@@ -12,6 +12,8 @@ const useStyles = createUseStyles({
       switch (props?.type) {
         case "secondary":
           return COLORS.secondary;
+        case "danger":
+          return COLORS.dangerDark;
         case "primary":
         default:
           return COLORS.primary;
@@ -21,6 +23,7 @@ const useStyles = createUseStyles({
       switch (props?.type) {
         case "secondary":
           return COLORS.background;
+
         case "primary":
         default:
           return COLORS.foreground;
@@ -36,6 +39,8 @@ const useStyles = createUseStyles({
         switch (props?.type) {
           case "secondary":
             return COLORS.secondaryDark;
+          case "danger":
+            return COLORS.dangerDark;
           case "primary":
           default:
             return COLORS.primaryDark;
@@ -48,6 +53,8 @@ const useStyles = createUseStyles({
         switch (props?.type) {
           case "secondary":
             return COLORS.secondaryDarker;
+          case "danger":
+            return COLORS.dangerDarker;
           case "primary":
           default:
             return COLORS.primaryDarker;
@@ -58,8 +65,8 @@ const useStyles = createUseStyles({
 });
 
 export interface IProps {
-  children: ReactChild;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  children?: ReactChild;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: ButtonType;
 }
 export const Button = ({ children, type = "primary", onClick }: IProps) => {
