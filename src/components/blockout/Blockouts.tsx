@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Button, Spinner } from "components";
 import {
@@ -65,7 +65,7 @@ export const Blockouts = () => {
     );
   };
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     setPlans(await getPlansBetween(startDate, endDate));
     const teamsStringValue = localStorage.getItem(LOCALSTORAGE_TEAMS_KEY);
@@ -88,11 +88,11 @@ export const Blockouts = () => {
       )
     );
     setLoading(false);
-  };
+  }, [endDate, startDate]);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
   const classes = useStyles();
   return (
