@@ -31,16 +31,16 @@ const getStartDate = (): Date => {
   if (today.getMonth() >= 6) {
     return new Date(today.getFullYear(), 6, 1);
   } else {
-    return new Date(today.getFullYear(), 0, 2);
+    return new Date(today.getFullYear(), 0, 1);
   }
 };
 
 const getEndDate = (): Date => {
   const today = new Date();
   if (today.getMonth() >= 6) {
-    return new Date(today.getFullYear() + 1, 0, 1);
+    return new Date(today.getFullYear(), 11, 31);
   } else {
-    return new Date(today.getFullYear(), 5, 31);
+    return new Date(today.getFullYear(), 5, 30);
   }
 };
 

@@ -15,6 +15,14 @@ const useStyles = createUseStyles({
   },
 });
 
+const formatDate = (date: Date): string => {
+  const value = `${date.getFullYear()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+  console.log(date, value);
+  return value;
+};
+
 export interface IProps {
   value: Date;
   onChange?: (value: Date) => void;
@@ -25,7 +33,7 @@ export const DateInput = ({ value, onChange }: IProps) => {
     <input
       type="date"
       className={classes.input}
-      value={value.toISOString().split("T")[0]}
+      value={formatDate(value)}
       onChange={(e) => onChange?.(new Date(e.currentTarget.value))}
     />
   );
