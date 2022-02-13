@@ -107,6 +107,14 @@ export const Teams = () => {
     }
   };
 
+  const removeTeam = (team: ITeam) => {
+    setTeams(
+      [...teams.filter((t) => t.id !== team.id)].sort((a, b) => a.id - b.id)
+    );
+    saveTeams();
+    setActiveTeam(undefined);
+  };
+
   useEffect(loadTeams, []);
   useEffect(saveTeams, [teams]);
 
@@ -134,23 +142,30 @@ export const Teams = () => {
         ))}
       </div>
       {activeTeam && (
-        <table className={classes.memberTable}>
-          <tbody>
-            {activeTeam?.members.map((member) => (
-              <tr key={member.id}>
-                <td>{member.fullName}</td>
-                <td>
-                  <Button
-                    onClick={() => removeTeamMember(member)}
-                    type="danger"
-                  >
-                    <i className="las la-trash"></i>
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <>
+          <table className={classes.memberTable}>
+            <tbody>
+              {activeTeam?.members.map((member) => (
+                <tr key={member.id}>
+                  <td>{member.fullName}</td>
+                  <td>
+                    <Button
+                      onClick={() => removeTeamMember(member)}
+                      type="danger"
+                    >
+                      <i className="las la-trash"></i>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <span>
+            <Button onClick={() => removeTeam(activeTeam)} type="danger">
+              Slett valgt team
+            </Button>
+          </span>
+        </>
       )}
       {activeTeam && (
         <div className={classes.personPickerWrapper}>
