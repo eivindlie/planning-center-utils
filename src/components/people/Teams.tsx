@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
-import { Button } from "..";
-import { IPerson, ITeam, ITeamMember } from "../../types";
-import { PersonPicker } from "./PersonPicker";
-import { TextInput } from "../_basis/TextInput";
+import { Button } from "components";
+import { IPerson, ITeam, ITeamMember } from "types";
+import { PersonPicker } from "components/people/PersonPicker";
+import { TextInput } from "components/_basis/TextInput";
 
 const useStyles = createUseStyles({
   teams: {

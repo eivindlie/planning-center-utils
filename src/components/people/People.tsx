@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getPeople } from "../../clients/peopleClient";
-import { IPerson } from "../../types";
+import { getPeople } from "clients/peopleClient";
+import { IPerson } from "types";
 
 export const People = () => {
   const [people, setPeople] = useState<IPerson[]>([]);

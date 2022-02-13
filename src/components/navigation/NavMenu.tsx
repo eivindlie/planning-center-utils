@@ -1,5 +1,5 @@
 import { createUseStyles } from "react-jss";
-import { COLORS } from "../../style/variables";
+import { COLORS } from "style/variables";
 import { NavElement } from "./NavElement";
 
 const useStyles = createUseStyles({

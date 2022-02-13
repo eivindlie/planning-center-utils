@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { createUseStyles } from "react-jss";
-import { Spinner } from "..";
+import { Spinner } from "components";
 import {
   getBlockoutDatesForPerson,
   getPlansBetween,
-} from "../../clients/serviceClient";
-import { IPlan, ITeam, ITeamMemberWithBlockoutDates } from "../../types";
+} from "clients/serviceClient";
+import { IPlan, ITeam, ITeamMemberWithBlockoutDates } from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
-import { LOCALSTORAGE_TEAMS_KEY } from "../people/Teams";
+import { LOCALSTORAGE_TEAMS_KEY } from "components/people/Teams";
 
 const useStyles = createUseStyles({
   wrapper: {},

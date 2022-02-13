@@ -1,6 +1,6 @@
-import { IBlockoutDate, IPlan } from "../types";
-import { IApiBlockoutDate, IApiPlan } from "../types/contractTypes";
-import { get } from "../utils/crud";
+import { IBlockoutDate, IPlan } from "types";
+import { IApiBlockoutDate, IApiPlan } from "types/contractTypes";
+import { get } from "utils/crud";
 
 const BASE_URL = "https://api.planningcenteronline.com/services/v2";
 const LØRDAGSMØTET_SERVICE_TYPE = "1178319";

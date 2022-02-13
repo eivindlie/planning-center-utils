@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { createUseStyles } from "react-jss";
-import { Button, Spinner } from "..";
-import { searchByName } from "../../clients/peopleClient";
-import { IPerson } from "../../types";
-import { TextInput } from "../_basis/TextInput";
+import { Button, Spinner } from "components";
+import { searchByName } from "clients/peopleClient";
+import { IPerson } from "types";
+import { TextInput } from "components/_basis/TextInput";
 
 const useStyles = createUseStyles({
   container: {

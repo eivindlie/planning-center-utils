@@ -1,6 +1,6 @@
-import { IPerson } from "../types";
-import { IApiPerson } from "../types/contractTypes";
-import { get } from "../utils/crud";
+import { IPerson } from "types";
+import { IApiPerson } from "types/contractTypes";
+import { get } from "utils/crud";
 
 const BASE_URL = "https://api.planningcenteronline.com/people/v2";
 

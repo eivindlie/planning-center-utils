@@ -1,7 +1,7 @@
 import { createUseStyles } from "react-jss";
-import { Routes } from "../routes";
-import { COLORS } from "../style/variables";
-import { NavMenu } from "./navigation/NavMenu";
+import { Routes } from "routes";
+import { COLORS } from "style/variables";
+import { NavMenu } from "components/navigation/NavMenu";
 
 const useStyles = createUseStyles({
   app: {

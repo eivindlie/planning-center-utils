@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getPlansBetween } from "../clients/serviceClient";
-import { IPlan } from "../types";
+import { getPlansBetween } from "clients/serviceClient";
+import { IPlan } from "types";
 
 export const Plans = () => {
   const [plans, setPlans] = useState<IPlan[]>([]);

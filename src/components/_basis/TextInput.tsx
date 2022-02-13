@@ -1,6 +1,6 @@
 import { FormEventHandler, KeyboardEventHandler } from "react";
 import { createUseStyles } from "react-jss";
-import { COLORS } from "../../style/variables";
+import { COLORS } from "style/variables";
 
 const useStyles = createUseStyles({
   input: {
