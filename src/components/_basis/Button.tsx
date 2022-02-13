@@ -26,7 +26,7 @@ const useStyles = createUseStyles({
 
         case "primary":
         default:
-          return COLORS.foreground;
+          return COLORS.foregroundLight;
       }
     },
     border: "none",

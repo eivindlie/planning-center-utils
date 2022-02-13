@@ -11,6 +11,8 @@ const PALETTE = {
 export const COLORS = {
   background: "#000",
   foreground: "#ccc",
+  foregroundLight: "#fff",
+  foregroundHighlight: "#fff",
 
   primary: PALETTE.purpleNavyLighter,
   primaryDark: PALETTE.purpleNavyLight,
@@ -24,7 +26,6 @@ export const COLORS = {
   dangerDark: "#cc0000",
   dangerDarker: "#a60000",
 
-  foregroundHighlight: "#fff",
   border: "#333",
   borderHighlight: "#555",
   elementBackground: "#bbb",

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createUseStyles } from "react-jss";
-import { Spinner } from "components";
+import { Button, Spinner } from "components";
 import {
   getBlockoutDatesForPerson,
   getPlansBetween,
@@ -8,9 +8,15 @@ import {
 import { IPlan, ITeam, ITeamMemberWithBlockoutDates } from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
 import { LOCALSTORAGE_TEAMS_KEY } from "components/people/Teams";
+import { DateInput } from "components/_basis/DateInput";
 
 const useStyles = createUseStyles({
   wrapper: {},
+  dateInput: {
+    display: "flex",
+    alignItems: "flex-start",
+    gap: 10,
+  },
 });
 
 interface ITeamWithBlockouts {
@@ -72,18 +78,10 @@ export const Blockouts = () => {
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
-      <div>
-        <input
-          type="date"
-          value={startDate.toISOString().split("T")[0]}
-          onChange={(e) => setStartDate(new Date(e.currentTarget.value))}
-        />
-        <input
-          type="date"
-          value={endDate.toISOString().split("T")[0]}
-          onChange={(e) => setEndDate(new Date(e.currentTarget.value))}
-        />
-        <button onClick={() => load()}>Hent oversikt</button>
+      <div className={classes.dateInput}>
+        <DateInput value={startDate} onChange={(date) => setStartDate(date)} />
+        <DateInput value={endDate} onChange={(date) => setEndDate(date)} />
+        <Button onClick={() => load()}>Hent oversikt</Button>
       </div>
       {loading && <Spinner />}
       {!loading &&
