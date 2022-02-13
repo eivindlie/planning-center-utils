@@ -1,5 +1,5 @@
 import { ITokenResponse } from "types/auth";
-
+import * as auth from "firebase/auth";
 export const REDIRECT_PATH = `/oauth/callback`;
 
 const LOCALSTORAGE_TOKEN_KEY = "planning_center_utils.access_token";
@@ -48,17 +48,17 @@ export const handle_callback = async () => {
     method: "POST",
   });
 
-  console.log(response);
+  const responseData = (await response.json()) as ITokenResponse;
+  const pcData = responseData.planningCenterResponse;
 
-  const data = (await response.json()) as ITokenResponse;
+  auth.signInWithCustomToken(auth.getAuth(), responseData.firebaseToken);
 
-  console.log("Data", data);
-  localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, data.access_token);
+  localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, pcData.access_token);
   localStorage.setItem(
     LOCALSTORAGE_EXPIRATION_KEY,
-    (data.created_at + data.expires_in).toString()
+    (pcData.created_at + pcData.expires_in).toString()
   );
-  localStorage.setItem(LOCALSTORAGE_REFRESH_TOKEN_KEY, data.refresh_token);
+  localStorage.setItem(LOCALSTORAGE_REFRESH_TOKEN_KEY, pcData.refresh_token);
 
   window.location.replace(window.location.origin);
 };
