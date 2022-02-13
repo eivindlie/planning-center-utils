@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
+import { Button } from ".";
 import { IPerson, ITeam, ITeamMember } from "../types";
 import { PersonPicker } from "./PersonPicker";
+import { TextInput } from "./_basis/TextInput";
 
 const useStyles = createUseStyles({
   teams: {
@@ -84,13 +86,12 @@ export const Teams = () => {
   return (
     <section className={classes.teams}>
       <div>
-        <input
-          type="text"
+        <TextInput
           value={newTeamName}
           onInput={(e) => setNewTeamName(e.currentTarget.value)}
           onKeyPress={(e) => e.key === "Enter" && createTeam()}
         />
-        <button onClick={createTeam}>Legg til team</button>
+        <Button onClick={createTeam}>Legg til team</Button>
       </div>
       <div className={classes.teamPicker}>
         {teams.map((team) => (
