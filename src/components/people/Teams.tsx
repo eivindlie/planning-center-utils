@@ -4,6 +4,7 @@ import { Button } from "components";
 import { IPerson, ITeam, ITeamMember } from "types";
 import { PersonPicker } from "components/people/PersonPicker";
 import { TextInput } from "components/_basis/TextInput";
+import { COLORS } from "style/variables";
 
 const useStyles = createUseStyles({
   teams: {
@@ -11,18 +12,24 @@ const useStyles = createUseStyles({
     flexDirection: "column",
     gap: "10px",
   },
+  newTeam: {
+    display: "flex",
+    gap: 10,
+    borderBottom: `1px solid ${COLORS.border}`,
+    paddingBottom: 20,
+  },
   teamPicker: {
+    marginTop: 25,
     display: "flex",
     gap: "10px",
   },
   memberTable: {
+    marginTop: 15,
     width: "fit-content",
   },
-  button: {
-    border: "none",
-  },
-  activeButton: {
-    background: "#00f0f8",
+  personPickerWrapper: {
+    marginTop: 50,
+    borderTop: `1px solid ${COLORS.border}`,
   },
 });
 
@@ -106,7 +113,8 @@ export const Teams = () => {
   const classes = useStyles();
   return (
     <section className={classes.teams}>
-      <div>
+      <h3>Legg til team</h3>
+      <div className={classes.newTeam}>
         <TextInput
           value={newTeamName}
           onInput={(e) => setNewTeamName(e.currentTarget.value)}
@@ -125,21 +133,31 @@ export const Teams = () => {
           </Button>
         ))}
       </div>
-      <table className={classes.memberTable}>
-        <tbody>
-          {activeTeam?.members.map((member) => (
-            <tr key={member.id}>
-              <td>{member.fullName}</td>
-              <td>
-                <Button onClick={() => removeTeamMember(member)} type="danger">
-                  <i className="las la-trash"></i>
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <PersonPicker onPersonSelected={(person) => addTeamMember(person)} />
+      {activeTeam && (
+        <table className={classes.memberTable}>
+          <tbody>
+            {activeTeam?.members.map((member) => (
+              <tr key={member.id}>
+                <td>{member.fullName}</td>
+                <td>
+                  <Button
+                    onClick={() => removeTeamMember(member)}
+                    type="danger"
+                  >
+                    <i className="las la-trash"></i>
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {activeTeam && (
+        <div className={classes.personPickerWrapper}>
+          <h3>Legg til medlem i team</h3>
+          <PersonPicker onPersonSelected={(person) => addTeamMember(person)} />
+        </div>
+      )}
     </section>
   );
 };
