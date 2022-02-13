@@ -1,6 +1,6 @@
 import { createUseStyles } from "react-jss";
-import { COLORS } from "../style/variables";
-import { IPlan, ITeamMemberWithBlockoutDates } from "../types";
+import { COLORS } from "../../style/variables";
+import { IPlan, ITeamMemberWithBlockoutDates } from "../../types";
 
 const useStyles = createUseStyles({
   table: {
@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
     width: "200px",
   },
   blocked: {
-    background: "red",
+    background: COLORS.danger,
   },
 });
 
