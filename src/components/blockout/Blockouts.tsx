@@ -9,6 +9,7 @@ import { IPlan, ITeam, ITeamMemberWithBlockoutDates } from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
 import { LOCALSTORAGE_TEAMS_KEY } from "components/people/Teams";
 import { DateInput } from "components/_basis/DateInput";
+import { useEffect } from "react";
 
 const useStyles = createUseStyles({
   wrapper: {},
@@ -25,16 +26,30 @@ interface ITeamWithBlockouts {
   membersWithBlockouts: ITeamMemberWithBlockoutDates[];
 }
 
+const getStartDate = (): Date => {
+  const today = new Date();
+  if (today.getMonth() >= 6) {
+    return new Date(today.getFullYear(), 6, 1);
+  } else {
+    return new Date(today.getFullYear(), 0, 2);
+  }
+};
+
+const getEndDate = (): Date => {
+  const today = new Date();
+  if (today.getMonth() >= 6) {
+    return new Date(today.getFullYear() + 1, 0, 1);
+  } else {
+    return new Date(today.getFullYear(), 5, 31);
+  }
+};
+
 export const Blockouts = () => {
   const [teams, setTeams] = useState<ITeamWithBlockouts[]>([]);
   const [plans, setPlans] = useState<IPlan[]>([]);
   const [loading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState(
-    new Date(new Date().getFullYear(), 0, 2)
-  );
-  const [endDate, setEndDate] = useState(
-    new Date(new Date().getFullYear() + 1, 0, 1)
-  );
+  const [startDate, setStartDate] = useState(getStartDate());
+  const [endDate, setEndDate] = useState(getEndDate());
 
   const getBlockoutsForTeam = async (
     team: ITeam
@@ -74,6 +89,10 @@ export const Blockouts = () => {
     );
     setLoading(false);
   };
+
+  useEffect(() => {
+    load();
+  }, []);
 
   const classes = useStyles();
   return (
