@@ -21,10 +21,18 @@ const sendRequest = async (
   url: string,
   method: string = "GET"
 ): Promise<Response> => {
-  return fetch(url, {
+  const response = await fetch(url, {
     method: method,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
   });
+
+  if (response.status === 429) {
+    window.alert(
+      "Planning Center synes visst vi har sendt litt mange forespørsler... Vent litt, og prøv på nytt."
+    );
+  }
+
+  return response;
 };
