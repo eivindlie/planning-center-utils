@@ -1,5 +1,6 @@
 import { ReactChild } from "react";
 import { createUseStyles } from "react-jss";
+import { Link } from "react-router-dom";
 import { COLORS } from "style/variables";
 
 const useStyles = createUseStyles({
@@ -24,8 +25,8 @@ export interface IProps {
 export const NavElement = ({ children, href }: IProps) => {
   const classes = useStyles();
   return (
-    <a className={classes.link} href={href}>
+    <Link className={classes.link} to={href}>
       {children}
-    </a>
+    </Link>
   );
 };

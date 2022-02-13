@@ -24,3 +24,8 @@ const mapPerson = (person: IApiPerson): IPerson => ({
   nickname: person.attributes.nickname,
   child: person.attributes.child,
 });
+
+export const getProfile = async (): Promise<IPerson> => {
+  const result = await get(`${BASE_URL}/me`);
+  return mapPerson(result);
+};

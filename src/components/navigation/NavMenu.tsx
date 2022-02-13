@@ -9,8 +9,8 @@ const useStyles = createUseStyles({
     height: "100%",
     boxSizing: "border-box",
     borderRight: `2px solid ${COLORS.border}`,
-    padding: "10px",
-    gap: "10px",
+    padding: "25px 15px",
+    gap: "25px",
   },
 });
 
