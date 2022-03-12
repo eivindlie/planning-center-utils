@@ -42,13 +42,13 @@ const createMapOfTeamMemberType = (
   return Object.assign(
     {},
     ...plans.map((plan, i) => {
-      const teamMembers = teamMembersForAllPlans[i];
+      const teamMembers = teamMembersForAllPlans[i].filter(
+        (m) => m.status !== "D"
+      );
 
       const matchingMembers = teamMembers.filter(
         (teamMember) => teamMember.teamPositionName === type
       );
-
-      console.log(type, plan, matchingMembers);
 
       return {
         [plan.id]: matchingMembers,
