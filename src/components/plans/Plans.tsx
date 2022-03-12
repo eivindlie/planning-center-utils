@@ -103,6 +103,7 @@ export const Plans = () => {
           <thead>
             <tr>
               <th>Dato</th>
+              <th>Taleserie</th>
               <th>Tema</th>
               <th>Taler</th>
               <th>Lovsangsleder</th>
@@ -112,6 +113,7 @@ export const Plans = () => {
             {plans.map((plan) => (
               <tr key={plan.id}>
                 <td>{plan.sortDate.toLocaleDateString()}</td>
+                <td>{plan.seriesTitle}</td>
                 <td>{plan.title}</td>
                 <td>{speakers[plan.id].map((m) => m.name).join(", ")}</td>
                 <td>{worshipLeaders[plan.id].map((m) => m.name).join(", ")}</td>

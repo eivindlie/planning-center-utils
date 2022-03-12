@@ -1,6 +1,7 @@
 export interface IPlan {
   id: string;
   title: string;
+  seriesTitle: string;
   createdAt: Date;
   updatedAt: Date;
   sortDate: Date;

@@ -14,16 +14,7 @@ export const getPlans = async (): Promise<IPlan[]> => {
     `${BASE_URL}/service_types/${LØRDAGSMØTET_SERVICE_TYPE}/plans?order=sort_date`
   )) as IApiPlan[];
 
-  return result.map(
-    (plan) =>
-      ({
-        id: plan.id,
-        title: plan.attributes.title,
-        createdAt: new Date(plan.attributes.created_at),
-        updatedAt: new Date(plan.attributes.updated_at),
-        sortDate: new Date(plan.attributes.sort_date),
-      } as IPlan)
-  );
+  return result.map(mapPlan);
 };
 
 export const getPlansBetween = async (
@@ -57,6 +48,14 @@ export const getTeamMembersForPlan = async (
   return result.map(mapPlanTeamMember);
 };
 
+const mapPlan = (plan: IApiPlan): IPlan => ({
+  id: plan.id,
+  title: plan.attributes.title,
+  seriesTitle: plan.attributes.series_title,
+  createdAt: new Date(plan.attributes.created_at),
+  updatedAt: new Date(plan.attributes.updated_at),
+  sortDate: new Date(plan.attributes.sort_date),
+});
 const mapBlockoutDate = (blockoutDate: IApiBlockoutDate): IBlockoutDate => ({
   id: blockoutDate.id,
   reason: blockoutDate.attributes.reason,

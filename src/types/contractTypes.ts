@@ -24,6 +24,7 @@ export interface IPlanAttributes {
   updated_at: string;
   title: string;
   sort_date: string;
+  series_title: string;
 }
 
 export interface IApiPlanTeamMember {
