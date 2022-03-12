@@ -2,6 +2,8 @@ const PALETTE = {
   purpleNavy: "#464D77",
   purpleNavyLight: "#586199",
   purpleNavyLighter: "#6772b4",
+  purpleNavyLighter2: "#7582d0",
+  purpleNavyLighter3: "#8897f2",
   celadonGreen: "#36827F",
   naplesYellow: "#F9DB6D",
   snow: "#F4EDED",
@@ -17,6 +19,8 @@ export const COLORS = {
   primary: PALETTE.purpleNavyLighter,
   primaryDark: PALETTE.purpleNavyLight,
   primaryDarker: PALETTE.purpleNavy,
+  primaryLight: PALETTE.purpleNavyLighter2,
+  primaryLighter: PALETTE.purpleNavyLighter3,
 
   secondary: "#bbb",
   secondaryDark: "a1a1a1",

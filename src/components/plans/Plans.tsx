@@ -28,6 +28,10 @@ const useStyles = createUseStyles({
       padding: "10px",
     },
   },
+  activeRow: {
+    background: COLORS.primaryLighter,
+    color: COLORS.background,
+  },
 });
 
 interface ITeamMemberTypeMap {
@@ -89,6 +93,10 @@ export const Plans = () => {
     load();
   }, [load]);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const nextPlan = plans.filter((plan) => plan.sortDate >= today).shift();
+
   const classes = useStyles();
   return (
     <div className={classes.wrapper}>
@@ -111,7 +119,10 @@ export const Plans = () => {
           </thead>
           <tbody>
             {plans.map((plan) => (
-              <tr key={plan.id}>
+              <tr
+                key={plan.id}
+                className={plan === nextPlan ? classes.activeRow : ""}
+              >
                 <td>{formatDate(plan.sortDate)}</td>
                 <td>{plan.seriesTitle}</td>
                 <td>{plan.title}</td>
