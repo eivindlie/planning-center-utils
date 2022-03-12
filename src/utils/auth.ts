@@ -40,7 +40,6 @@ export const isSignedIn = () => {
 };
 
 export const handle_callback = async () => {
-  console.log("Handling callback");
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
 

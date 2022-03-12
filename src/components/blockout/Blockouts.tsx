@@ -10,6 +10,7 @@ import { TeamBlockouts } from "./TeamBlockouts";
 import { LOCALSTORAGE_TEAMS_KEY } from "components/people/Teams";
 import { DateInput } from "components/_basis/DateInput";
 import { useEffect } from "react";
+import { getEndOfSemester, getStartOfSemester } from "utils/dates";
 
 const useStyles = createUseStyles({
   wrapper: {},
@@ -26,30 +27,12 @@ interface ITeamWithBlockouts {
   membersWithBlockouts: ITeamMemberWithBlockoutDates[];
 }
 
-const getStartDate = (): Date => {
-  const today = new Date();
-  if (today.getMonth() >= 6) {
-    return new Date(today.getFullYear(), 6, 1);
-  } else {
-    return new Date(today.getFullYear(), 0, 1);
-  }
-};
-
-const getEndDate = (): Date => {
-  const today = new Date();
-  if (today.getMonth() >= 6) {
-    return new Date(today.getFullYear(), 11, 31);
-  } else {
-    return new Date(today.getFullYear(), 5, 30);
-  }
-};
-
 export const Blockouts = () => {
   const [teams, setTeams] = useState<ITeamWithBlockouts[]>([]);
   const [plans, setPlans] = useState<IPlan[]>([]);
   const [loading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState(getStartDate());
-  const [endDate, setEndDate] = useState(getEndDate());
+  const [startDate, setStartDate] = useState(getStartOfSemester());
+  const [endDate, setEndDate] = useState(getEndOfSemester());
 
   const getBlockoutsForTeam = async (
     team: ITeam
