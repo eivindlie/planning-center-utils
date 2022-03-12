@@ -22,7 +22,6 @@ const useStyles = createUseStyles({
   planTable: {
     borderSpacing: 0,
     tableLayout: "fixed",
-    whiteSpace: "nowrap",
 
     "& th, & td": {
       border: `1px solid ${COLORS.foreground}`,
@@ -31,36 +30,57 @@ const useStyles = createUseStyles({
   },
 });
 
-interface IWorshipLeaderMap {
-  [planId: string]: IPlanTeamMember | undefined;
+interface ITeamMemberTypeMap {
+  [planId: string]: IPlanTeamMember[];
 }
+
+const createMapOfTeamMemberType = (
+  type: string,
+  plans: IPlan[],
+  teamMembersForAllPlans: IPlanTeamMember[][]
+): ITeamMemberTypeMap => {
+  return Object.assign(
+    {},
+    ...plans.map((plan, i) => {
+      const teamMembers = teamMembersForAllPlans[i];
+
+      const matchingMembers = teamMembers.filter(
+        (teamMember) => teamMember.teamPositionName === type
+      );
+
+      console.log(type, plan, matchingMembers);
+
+      return {
+        [plan.id]: matchingMembers,
+      };
+    })
+  );
+};
 
 export const Plans = () => {
   const [plans, setPlans] = useState<IPlan[]>([]);
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(getStartOfSemester());
   const [endDate, setEndDate] = useState(getEndOfSemester());
-  const [worshipLeaders, setWorshipLeaders] = useState<IWorshipLeaderMap>({});
+  const [worshipLeaders, setWorshipLeaders] = useState<ITeamMemberTypeMap>({});
+  const [speakers, setSpeakers] = useState<ITeamMemberTypeMap>({});
 
   const load = useCallback(async () => {
     setLoading(true);
     const plansResult = await getPlansBetween(startDate, endDate);
     setPlans(plansResult);
+    const teamMembersForAllPlans = await Promise.all(
+      plansResult.map((plan) => getTeamMembersForPlan(plan.id))
+    );
     setWorshipLeaders(
-      Object.assign(
-        {},
-        ...(await Promise.all(
-          plansResult.map(async (plan) => {
-            const teamMembers = await getTeamMembersForPlan(plan.id);
-
-            return {
-              [plan.id]: teamMembers.find(
-                (teamMember) => teamMember.teamPositionName === "Teamleder"
-              ),
-            };
-          })
-        ))
+      createMapOfTeamMemberType(
+        "Teamleder",
+        plansResult,
+        teamMembersForAllPlans
       )
+    );
+    setSpeakers(
+      createMapOfTeamMemberType("Taler", plansResult, teamMembersForAllPlans)
     );
     setLoading(false);
   }, [startDate, endDate]);
@@ -84,6 +104,7 @@ export const Plans = () => {
             <tr>
               <th>Dato</th>
               <th>Tema</th>
+              <th>Taler</th>
               <th>Lovsangsleder</th>
             </tr>
           </thead>
@@ -92,7 +113,8 @@ export const Plans = () => {
               <tr key={plan.id}>
                 <td>{plan.sortDate.toLocaleDateString()}</td>
                 <td>{plan.title}</td>
-                <td>{worshipLeaders[plan.id]?.name ?? ""}</td>
+                <td>{speakers[plan.id].map((m) => m.name).join(", ")}</td>
+                <td>{worshipLeaders[plan.id].map((m) => m.name).join(", ")}</td>
               </tr>
             ))}
           </tbody>
