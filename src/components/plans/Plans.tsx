@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getPlansBetween, getTeamMembersForPlan } from "clients/serviceClient";
 import { IPlan, IPlanTeamMember } from "types";
-import { getEndOfSemester, getStartOfSemester } from "utils/dates";
+import { formatDate, getEndOfSemester, getStartOfSemester } from "utils/dates";
 import { Spinner } from "components/_basis/Spinner";
 import { createUseStyles } from "react-jss";
 import { DateInput } from "components/_basis/DateInput";
@@ -112,7 +112,7 @@ export const Plans = () => {
           <tbody>
             {plans.map((plan) => (
               <tr key={plan.id}>
-                <td>{plan.sortDate.toLocaleDateString()}</td>
+                <td>{formatDate(plan.sortDate)}</td>
                 <td>{plan.seriesTitle}</td>
                 <td>{plan.title}</td>
                 <td>{speakers[plan.id].map((m) => m.name).join(", ")}</td>

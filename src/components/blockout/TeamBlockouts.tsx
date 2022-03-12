@@ -1,6 +1,7 @@
 import { createUseStyles } from "react-jss";
 import { COLORS } from "style/variables";
 import { IPlan, ITeamMemberWithBlockoutDates } from "types";
+import { formatDate } from "utils/dates";
 
 const useStyles = createUseStyles({
   table: {
@@ -40,7 +41,7 @@ export const TeamBlockouts = ({ teamName, teamMembers, plans }: IProps) => {
           <tr>
             <th className={classes.nameCell}></th>
             {plans.map((plan) => (
-              <th key={plan.id}>{plan.sortDate.toLocaleDateString()}</th>
+              <th key={plan.id}>{formatDate(plan.sortDate)}</th>
             ))}
           </tr>
         </thead>
