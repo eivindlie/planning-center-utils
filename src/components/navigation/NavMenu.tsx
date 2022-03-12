@@ -20,6 +20,7 @@ export const NavMenu = () => {
     <nav className={classes.nav}>
       <NavElement href="/teams">Teams</NavElement>
       <NavElement href="/blockouts">Blockout</NavElement>
+      <NavElement href="/plans">Turnus</NavElement>
     </nav>
   );
 };
