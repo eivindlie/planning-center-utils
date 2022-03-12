@@ -20,10 +20,23 @@ export interface IApiPlan {
 }
 
 export interface IPlanAttributes {
-  created_at: "string";
-  updated_at: "string";
+  created_at: string;
+  updated_at: string;
   title: string;
   sort_date: string;
+}
+
+export interface IApiPlanTeamMember {
+  type: string;
+  id: string;
+  attributes: IApiPlanTeamMemberAttributes;
+}
+
+export interface IApiPlanTeamMemberAttributes {
+  status: string;
+  team_position_name: string;
+  name: string;
+  photo_thumbnail: string;
 }
 
 export interface IApiBlockoutDate {

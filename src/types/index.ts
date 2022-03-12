@@ -6,6 +6,14 @@ export interface IPlan {
   sortDate: Date;
 }
 
+export interface IPlanTeamMember {
+  id: string;
+  name: string;
+  teamPositionName: string;
+  status: string;
+  photoThumbnail: string;
+}
+
 export interface IPerson {
   id: string;
   givenName: string;

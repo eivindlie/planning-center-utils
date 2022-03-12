@@ -1,5 +1,9 @@
-import { IBlockoutDate, IPlan } from "types";
-import { IApiBlockoutDate, IApiPlan } from "types/contractTypes";
+import { IBlockoutDate, IPlan, IPlanTeamMember } from "types";
+import {
+  IApiBlockoutDate,
+  IApiPlan,
+  IApiPlanTeamMember,
+} from "types/contractTypes";
 import { get } from "utils/crud";
 
 const BASE_URL = "https://api.planningcenteronline.com/services/v2";
@@ -43,9 +47,29 @@ export const getBlockoutDatesForPerson = async (
   return result.map(mapBlockoutDate);
 };
 
+export const getTeamMembersForPlan = async (
+  planId: string
+): Promise<IPlanTeamMember[]> => {
+  const result = (await get(
+    `${BASE_URL}/service_types/${LØRDAGSMØTET_SERVICE_TYPE}/plans/${planId}/team_members`
+  )) as IApiPlanTeamMember[];
+
+  return result.map(mapPlanTeamMember);
+};
+
 const mapBlockoutDate = (blockoutDate: IApiBlockoutDate): IBlockoutDate => ({
   id: blockoutDate.id,
   reason: blockoutDate.attributes.reason,
   startsAt: new Date(blockoutDate.attributes.starts_at),
   endsAt: new Date(blockoutDate.attributes.ends_at),
+});
+
+const mapPlanTeamMember = (
+  planTeamMember: IApiPlanTeamMember
+): IPlanTeamMember => ({
+  id: planTeamMember.id,
+  name: planTeamMember.attributes.name,
+  status: planTeamMember.attributes.status,
+  teamPositionName: planTeamMember.attributes.team_position_name,
+  photoThumbnail: planTeamMember.attributes.photo_thumbnail,
 });
