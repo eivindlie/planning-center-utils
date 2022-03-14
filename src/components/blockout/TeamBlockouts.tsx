@@ -21,6 +21,14 @@ const useStyles = createUseStyles({
   nameCell: {
     width: "200px",
   },
+  totalRow: {
+    "& td": {
+      borderTop: `3px solid ${COLORS.foreground}`,
+    },
+  },
+  totalTitleCell: {
+    fontStyle: "italic",
+  },
   blocked: {
     background: COLORS.danger,
   },
@@ -65,6 +73,22 @@ export const TeamBlockouts = ({ teamName, teamMembers, plans }: IProps) => {
               ))}
             </tr>
           ))}
+          <tr className={classes.totalRow}>
+            <td className={classes.totalTitleCell}>Totalt</td>
+            {plans.map((plan) => (
+              <td>
+                {
+                  teamMembers.filter((member) =>
+                    member.blockoutDates.some(
+                      (blockoutDate) =>
+                        blockoutDate.startsAt <= plan.sortDate &&
+                        blockoutDate.endsAt >= plan.sortDate
+                    )
+                  ).length
+                }
+              </td>
+            ))}
+          </tr>
         </tbody>
       </table>
     </div>
