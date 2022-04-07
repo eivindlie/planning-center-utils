@@ -55,3 +55,21 @@ export interface IBlockoutDateAttributes {
   starts_at_utc: string;
   ends_at_utc: string;
 }
+
+export interface IApiPlanTemplate {
+  id: string;
+  attributes: IPlanTemplateAttributes;
+}
+
+export interface IPlanTemplateAttributes {
+  can_view_order: boolean;
+  created_at: string;
+  item_count: number;
+  multi_day: boolean;
+  name: string;
+  note_count: number;
+  prefers_order_view: boolean;
+  rehearsable: boolean;
+  team_count: number;
+  updated_at: string;
+}
