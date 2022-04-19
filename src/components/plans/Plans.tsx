@@ -28,6 +28,15 @@ const useStyles = createUseStyles({
       padding: "10px",
     },
   },
+  planLink: {
+    color: COLORS.foreground,
+    cursor: "pointer",
+    textDecoration: "none",
+
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
   activeRow: {
     background: COLORS.primaryLighter,
     color: COLORS.background,
@@ -126,7 +135,10 @@ export const Plans = () => {
                 <td>{formatDate(plan.sortDate)}</td>
                 <td>{plan.seriesTitle}</td>
                 <td>
-                  <a href={`https://planningcenteronline.com/plans/${plan.id}`}>
+                  <a
+                    className={classes.planLink}
+                    href={`https://planningcenteronline.com/plans/${plan.id}`}
+                  >
                     {plan.title}
                   </a>
                 </td>
