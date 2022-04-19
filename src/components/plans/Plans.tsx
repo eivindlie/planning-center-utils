@@ -125,7 +125,11 @@ export const Plans = () => {
               >
                 <td>{formatDate(plan.sortDate)}</td>
                 <td>{plan.seriesTitle}</td>
-                <td>{plan.title}</td>
+                <td>
+                  <a href={`https://planningcenteronline.com/plans/${plan.id}`}>
+                    {plan.title}
+                  </a>
+                </td>
                 <td>{speakers[plan.id].map((m) => m.name).join(", ")}</td>
                 <td>{worshipLeaders[plan.id].map((m) => m.name).join(", ")}</td>
               </tr>
