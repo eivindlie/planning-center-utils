@@ -82,6 +82,24 @@ export const token = functions.https.onRequest(async (request, response) => {
   });
 });
 
+export const firebaseToken = functions.https.onRequest(
+  async (request, response) => {
+    cors(corsOptions)(request, response, async () => {
+      const pcProfile = await getPcProfile(request.query.token as string);
+
+      if (pcProfile.data.attributes.status != "active") {
+        throw new Error("User is not active in Planning Center");
+      }
+
+      const firebaseToken = await admin
+        .auth()
+        .createCustomToken(pcProfile.data.id);
+
+      response.send(firebaseToken);
+    });
+  }
+);
+
 export const redirect = functions.https.onRequest(async (request, response) => {
   cors(corsOptions)(request, response, () => {
     const state = JSON.parse(request.query.state as string);
