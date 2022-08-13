@@ -68,11 +68,17 @@ export interface IProps {
   children?: ReactChild;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: ButtonType;
+  title?: string;
 }
-export const Button = ({ children, type = "primary", onClick }: IProps) => {
+export const Button = ({
+  children,
+  type = "primary",
+  onClick,
+  title,
+}: IProps) => {
   const classes = useStyles({ type });
   return (
-    <button className={classes.button} onClick={onClick}>
+    <button className={classes.button} onClick={onClick} title={title}>
       {children}
     </button>
   );

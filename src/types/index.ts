@@ -34,6 +34,7 @@ export interface ITeam {
 export interface ITeamMember {
   id: string;
   fullName: string;
+  isLeader?: boolean;
 }
 
 export interface IBlockoutDate {

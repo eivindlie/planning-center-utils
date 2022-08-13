@@ -28,6 +28,10 @@ const useStyles = createUseStyles({
   memberTable: {
     marginTop: 15,
     width: "fit-content",
+
+    "& td": {
+      padding: "3px 10px",
+    },
   },
   personPickerWrapper: {
     marginTop: 50,
@@ -67,6 +71,25 @@ export const Teams = () => {
           }${member.lastName}`,
         } as ITeamMember,
       ],
+    };
+    saveTeam(team);
+  };
+
+  const toggleTeamLeader = (member: ITeamMember) => {
+    if (!activeTeam) {
+      return;
+    }
+    const team = {
+      ...activeTeam,
+      members: activeTeam.members.map((m) => {
+        if (m.id === member.id) {
+          return {
+            ...m,
+            isLeader: !m.isLeader,
+          };
+        }
+        return m;
+      }),
     };
     saveTeam(team);
   };
@@ -132,6 +155,16 @@ export const Teams = () => {
                 <tr key={member.id}>
                   <td>{member.fullName}</td>
                   <td>
+                    <Button
+                      onClick={() => toggleTeamLeader(member)}
+                      type={!!member.isLeader ? "primary" : "secondary"}
+                      title={
+                        member.isLeader ? "Fjern som leder" : "Sett som leder"
+                      }
+                    >
+                      <i className="las la-crown"></i>
+                    </Button>
+                    &nbsp;
                     <Button
                       onClick={() => removeTeamMember(member)}
                       type="danger"
