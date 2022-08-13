@@ -4,7 +4,8 @@ import fetch from "node-fetch";
 import * as cors from "cors";
 import { ITokenResponse } from "./types";
 import { UserRecord } from "firebase-functions/v1/auth";
-import { IProfileResponse } from "./types";
+import { IProfileResponse, IFirebaseUserProfile } from "./types";
+import { database } from "firebase-admin";
 
 const BASE_URL = "https://api.planningcenteronline.com/oauth";
 const SCOPE = "people services";
@@ -138,6 +139,13 @@ const getOrCreateUser = async (pcAuthToken: string): Promise<UserRecord> => {
       emailVerified: true,
       disabled: false,
     });
+
+    await database()
+      .ref(`/users/${userRecord.uid}`)
+      .set({
+        name: userRecord.displayName,
+        email: userRecord.email,
+      } as IFirebaseUserProfile);
     functions.logger.log("Created user record", userRecord);
   }
 

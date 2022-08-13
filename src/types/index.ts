@@ -47,3 +47,11 @@ export interface ITeamMemberWithBlockoutDates {
   member: ITeamMember;
   blockoutDates: IBlockoutDate[];
 }
+
+export type UserRole = "admin" | "user" | null;
+
+export interface IFirebaseUserProfile {
+  name: string;
+  email: string;
+  role: UserRole;
+}

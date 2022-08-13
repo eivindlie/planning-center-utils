@@ -29,3 +29,10 @@ export interface ITokenResponse {
   scope: string;
   created_at: number;
 }
+
+export type UserRole = "admin" | "user" | null;
+export interface IFirebaseUserProfile {
+  name: string;
+  email: string;
+  role: UserRole;
+}
