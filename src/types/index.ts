@@ -27,6 +27,12 @@ export interface IPerson {
 
 export interface ITeam {
   name: string;
+  id: string;
+  members: ITeamMember[];
+}
+
+export interface ITeamLocalStorage {
+  name: string;
   id: number;
   members: ITeamMember[];
 }

@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Button } from "components";
-import { IPerson, ITeam, ITeamMember } from "types";
+import { IPerson, ITeam, ITeamLocalStorage, ITeamMember } from "types";
 import { PersonPicker } from "components/people/PersonPicker";
 import { TextInput } from "components/_basis/TextInput";
 import { COLORS } from "style/variables";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDoc,
-  doc,
-} from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { useTeams } from "hooks/useTeams";
+import { addTeam, deleteTeam, saveTeam } from "firestore/teams";
 
 const useStyles = createUseStyles({
   teams: {
@@ -44,19 +38,19 @@ const useStyles = createUseStyles({
 export const LOCALSTORAGE_TEAMS_KEY = "planningcenter.teams";
 
 export const Teams = () => {
-  const [teams, setTeams] = useState<ITeam[]>([]);
-  const [activeTeam, setActiveTeam] = useState<ITeam | undefined>();
+  const teams = useTeams();
+  const [activeTeamId, setActiveTeamId] = useState<string | undefined>(
+    undefined
+  );
+  const activeTeam = teams.find((team) => team.id === activeTeamId);
   const [newTeamName, setNewTeamName] = useState("");
 
   const createTeam = () => {
-    setTeams([
-      ...teams,
-      {
-        name: newTeamName,
-        members: [],
-        id: Math.max(1, ...teams.map((team) => team.id + 1)),
-      } as ITeam,
-    ]);
+    addTeam({
+      name: newTeamName,
+      members: [],
+      id: "",
+    });
     setNewTeamName("");
   };
 
@@ -76,12 +70,7 @@ export const Teams = () => {
         } as ITeamMember,
       ],
     };
-    setActiveTeam(team);
-    setTeams(
-      [...teams.filter((t) => t.id !== team.id), team].sort(
-        (a, b) => a.id - b.id
-      )
-    );
+    saveTeam(team);
   };
 
   const removeTeamMember = (member: ITeamMember) => {
@@ -101,36 +90,7 @@ export const Teams = () => {
       ...activeTeam,
       members: activeTeam?.members.filter((m) => m.id !== member.id),
     };
-    setActiveTeam(team);
-    setTeams(
-      [...teams.filter((t) => t.id !== team.id), team].sort(
-        (a, b) => a.id - b.id
-      )
-    );
-    saveTeams();
-  };
-
-  const saveTeams = async () => {
-    localStorage.setItem(LOCALSTORAGE_TEAMS_KEY, JSON.stringify(teams));
-    const firestore = getFirestore();
-    const docRef = await addDoc(
-      collection(firestore, `personal/${getAuth().currentUser?.uid}/teams`),
-      teams
-    );
-  };
-
-  const loadTeams = async () => {
-    const stringValue = localStorage.getItem(LOCALSTORAGE_TEAMS_KEY);
-    const firestore = getFirestore();
-    const docRef = await getDoc(
-      doc(firestore, `personal/${getAuth().currentUser?.uid}`)
-    );
-    setTeams(docRef.data() as ITeam[]);
-    if (stringValue) {
-      setTeams(
-        (JSON.parse(stringValue) as ITeam[]).sort((a, b) => a.id - b.id)
-      );
-    }
+    saveTeam(team);
   };
 
   const removeTeam = (team: ITeam) => {
@@ -139,19 +99,9 @@ export const Teams = () => {
     ) {
       return;
     }
-    setTeams(
-      [...teams.filter((t) => t.id !== team.id)].sort((a, b) => a.id - b.id)
-    );
-    saveTeams();
-    setActiveTeam(undefined);
+    deleteTeam(team);
+    setActiveTeamId(undefined);
   };
-
-  useEffect(() => {
-    loadTeams();
-  }, []);
-  useEffect(() => {
-    saveTeams();
-  }, [teams]);
 
   const classes = useStyles();
   return (
@@ -170,7 +120,7 @@ export const Teams = () => {
           <Button
             type={team === activeTeam ? "primary" : "secondary"}
             key={team.id}
-            onClick={() => setActiveTeam(team)}
+            onClick={() => setActiveTeamId(team.id)}
           >
             {team.name}
           </Button>

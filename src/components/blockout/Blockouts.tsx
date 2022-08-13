@@ -5,7 +5,7 @@ import {
   getBlockoutDatesForPerson,
   getPlansBetween,
 } from "clients/serviceClient";
-import { IPlan, ITeam, ITeamMemberWithBlockoutDates } from "types";
+import { IPlan, ITeamLocalStorage, ITeamMemberWithBlockoutDates } from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
 import { LOCALSTORAGE_TEAMS_KEY } from "components/people/Teams";
 import { DateInput } from "components/_basis/DateInput";
@@ -35,7 +35,7 @@ export const Blockouts = () => {
   const [endDate, setEndDate] = useState(getEndOfSemester());
 
   const getBlockoutsForTeam = async (
-    team: ITeam
+    team: ITeamLocalStorage
   ): Promise<ITeamMemberWithBlockoutDates[]> => {
     return await Promise.all(
       team.members.map(
@@ -55,7 +55,7 @@ export const Blockouts = () => {
     if (!teamsStringValue) {
       return;
     }
-    const teams = (JSON.parse(teamsStringValue) as ITeam[]).sort(
+    const teams = (JSON.parse(teamsStringValue) as ITeamLocalStorage[]).sort(
       (a, b) => a.id - b.id
     );
     setTeams(
