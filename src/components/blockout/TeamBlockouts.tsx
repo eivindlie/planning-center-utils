@@ -22,6 +22,8 @@ const useStyles = createUseStyles({
   title: {
     gridColumn: "1 / -1",
     border: "none !important",
+    marginTop: "30px",
+    marginBottom: "10px",
   },
 });
 
