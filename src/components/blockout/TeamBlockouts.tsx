@@ -1,25 +1,12 @@
+import { Fragment } from "react";
 import { createUseStyles } from "react-jss";
 import { COLORS } from "style/variables";
 import { IPlan, ITeamMemberWithBlockoutDates } from "types";
 import { formatDate } from "utils/dates";
 
 const useStyles = createUseStyles({
-  table: {
-    borderCollapse: "collapse",
-    tableLayout: "fixed",
-    whiteSpace: "nowrap",
-
-    "& th, & td": {
-      border: `1px solid ${COLORS.foreground}`,
-      width: "25px",
-      padding: "5px",
-    },
-    "& th": {
-      writingMode: "vertical-lr",
-    },
-  },
-  nameCell: {
-    width: "200px",
+  date: {
+    writingMode: "vertical-lr",
   },
   totalRow: {
     "& td": {
@@ -32,6 +19,10 @@ const useStyles = createUseStyles({
   blocked: {
     background: COLORS.danger,
   },
+  title: {
+    gridColumn: "1 / -1",
+    border: "none !important",
+  },
 });
 
 export interface IProps {
@@ -42,55 +33,52 @@ export interface IProps {
 export const TeamBlockouts = ({ teamName, teamMembers, plans }: IProps) => {
   const classes = useStyles();
   return (
-    <div>
-      <h2>{teamName}</h2>
-      <table className={classes.table}>
-        <thead>
-          <tr>
-            <th className={classes.nameCell}></th>
+    <>
+      <h2 className={classes.title}>{teamName}</h2>
+      <>
+        <div></div>
+        {plans.map((plan) => (
+          <div key={plan.id} className={classes.date}>
+            {formatDate(plan.sortDate)}
+          </div>
+        ))}
+
+        {teamMembers.map((member) => (
+          <Fragment key={member.member.id}>
+            <div>{member.member.fullName}</div>
             {plans.map((plan) => (
-              <th key={plan.id}>{formatDate(plan.sortDate)}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {teamMembers.map((member) => (
-            <tr key={member.member.id}>
-              <td className={classes.nameCell}>{member.member.fullName}</td>
-              {plans.map((plan) => (
-                <td
-                  key={plan.id}
-                  className={
-                    member.blockoutDates.some(
-                      (blockoutDate) =>
-                        blockoutDate.startsAt <= plan.sortDate &&
-                        blockoutDate.endsAt >= plan.sortDate
-                    )
-                      ? classes.blocked
-                      : ""
-                  }
-                ></td>
-              ))}
-            </tr>
-          ))}
-          <tr className={classes.totalRow}>
-            <td className={classes.totalTitleCell}>Totalt</td>
-            {plans.map((plan) => (
-              <td key={plan.id}>
-                {
-                  teamMembers.filter((member) =>
-                    member.blockoutDates.some(
-                      (blockoutDate) =>
-                        blockoutDate.startsAt <= plan.sortDate &&
-                        blockoutDate.endsAt >= plan.sortDate
-                    )
-                  ).length
+              <div
+                key={plan.id}
+                className={
+                  member.blockoutDates.some(
+                    (blockoutDate) =>
+                      blockoutDate.startsAt <= plan.sortDate &&
+                      blockoutDate.endsAt >= plan.sortDate
+                  )
+                    ? classes.blocked
+                    : ""
                 }
-              </td>
+              ></div>
             ))}
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          </Fragment>
+        ))}
+        <>
+          <div className={classes.totalTitleCell}>Totalt</div>
+          {plans.map((plan) => (
+            <div key={plan.id}>
+              {
+                teamMembers.filter((member) =>
+                  member.blockoutDates.some(
+                    (blockoutDate) =>
+                      blockoutDate.startsAt <= plan.sortDate &&
+                      blockoutDate.endsAt >= plan.sortDate
+                  )
+                ).length
+              }
+            </div>
+          ))}
+        </>
+      </>
+    </>
   );
 };

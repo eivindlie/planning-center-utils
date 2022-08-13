@@ -12,12 +12,25 @@ import { useEffect } from "react";
 import { getEndOfSemester, getStartOfSemester } from "utils/dates";
 import { useTeams } from "hooks/useTeams";
 
-const useStyles = createUseStyles({
+const useStyles = createUseStyles<
+  "wrapper" | "dateInput" | "blockoutContainer",
+  { numberOfPlans: number }
+>({
   wrapper: {},
   dateInput: {
     display: "flex",
     alignItems: "flex-start",
     gap: 10,
+  },
+  blockoutContainer: {
+    display: "grid",
+    gridTemplateColumns: (props) =>
+      `repeat(${props.numberOfPlans + 1}, minmax(20px, max-content))`,
+    "& > *": {
+      border: "1px solid white",
+      padding: "5px",
+      minHeight: "20px",
+    },
   },
 });
 
@@ -80,7 +93,7 @@ export const Blockouts = () => {
     loadPlans();
   }, [loadPlans]);
 
-  const classes = useStyles();
+  const classes = useStyles({ numberOfPlans: plans.length });
   return (
     <div className={classes.wrapper}>
       <div className={classes.dateInput}>
@@ -89,15 +102,18 @@ export const Blockouts = () => {
         <Button onClick={() => loadPlans()}>Hent oversikt</Button>
       </div>
       {loading && <Spinner />}
-      {!loading &&
-        teamsWithBlockouts.map((team) => (
-          <TeamBlockouts
-            key={team.id}
-            teamMembers={team.membersWithBlockouts}
-            teamName={team.teamName}
-            plans={plans}
-          />
-        ))}
+      {!loading && (
+        <div className={classes.blockoutContainer}>
+          {teamsWithBlockouts.map((team) => (
+            <TeamBlockouts
+              key={team.id}
+              teamMembers={team.membersWithBlockouts}
+              teamName={team.teamName}
+              plans={plans}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
