@@ -1,5 +1,6 @@
 import { ITokenResponse } from "types/auth";
 import * as auth from "firebase/auth";
+import { getAuth, signInWithCustomToken } from "firebase/auth";
 export const REDIRECT_PATH = `/oauth/callback`;
 
 const LOCALSTORAGE_TOKEN_KEY = "planning_center_utils.access_token";
@@ -19,6 +20,20 @@ export const signIn = () => {
       environment: process.env.NODE_ENV,
     })}`
   );
+};
+
+export const signInToFirebase = async () => {
+  if (getAuth().currentUser) {
+    return;
+  }
+
+  const response = await fetch(
+    `${BASE_URL}/firebaseToken?token=${getToken()}}`,
+    {
+      method: "POST",
+    }
+  );
+  signInWithCustomToken(getAuth(), await response.text());
 };
 
 export const isSignedIn = () => {
@@ -49,8 +64,6 @@ export const handle_callback = async () => {
 
   const responseData = (await response.json()) as ITokenResponse;
   const pcData = responseData.planningCenterResponse;
-
-  auth.signInWithCustomToken(auth.getAuth(), responseData.firebaseToken);
 
   localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, pcData.access_token);
   localStorage.setItem(

@@ -10,7 +10,9 @@ import {
   isSignedIn,
   REDIRECT_PATH,
   signIn,
+  signInToFirebase,
 } from "./utils/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC55XSmQ3-6jOnkXYthLsTjz-Og83Kphss",
@@ -27,6 +29,8 @@ if (window.location.pathname.startsWith(REDIRECT_PATH)) {
 } else if (!isSignedIn()) {
   signIn();
 } else {
+  signInToFirebase();
+
   ReactDOM.render(
     <React.StrictMode>
       <BrowserRouter>
