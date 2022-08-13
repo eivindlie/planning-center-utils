@@ -5,7 +5,7 @@ import * as cors from "cors";
 import { ITokenResponse } from "./types";
 import { UserRecord } from "firebase-functions/v1/auth";
 import { IProfileResponse, IFirebaseUserProfile } from "./types";
-import { database } from "firebase-admin";
+import { firestore } from "firebase-admin";
 
 const BASE_URL = "https://api.planningcenteronline.com/oauth";
 const SCOPE = "people services";
@@ -140,8 +140,8 @@ const getOrCreateUser = async (pcAuthToken: string): Promise<UserRecord> => {
       disabled: false,
     });
 
-    await database()
-      .ref(`/users/${userRecord.uid}`)
+    await firestore()
+      .doc(`users/${userRecord.uid}`)
       .set({
         name: userRecord.displayName,
         email: userRecord.email,
