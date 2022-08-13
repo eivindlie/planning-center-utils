@@ -67,6 +67,7 @@ const mapPlanTeamMember = (
   planTeamMember: IApiPlanTeamMember
 ): IPlanTeamMember => ({
   id: planTeamMember.id,
+  personId: planTeamMember.relationships.person.data.id,
   name: planTeamMember.attributes.name,
   status: planTeamMember.attributes.status,
   teamPositionName: planTeamMember.attributes.team_position_name,

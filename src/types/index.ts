@@ -9,6 +9,7 @@ export interface IPlan {
 
 export interface IPlanTeamMember {
   id: string;
+  personId: string;
   name: string;
   teamPositionName: string;
   status: string;

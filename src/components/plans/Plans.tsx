@@ -7,6 +7,7 @@ import { createUseStyles } from "react-jss";
 import { DateInput } from "components/_basis/DateInput";
 import { Button } from "components/_basis/Button";
 import { COLORS } from "style/variables";
+import { useTeams } from "hooks/useTeams";
 
 const useStyles = createUseStyles({
   wrapper: {
@@ -77,6 +78,7 @@ export const Plans = () => {
   const [endDate, setEndDate] = useState(getEndOfSemester());
   const [worshipLeaders, setWorshipLeaders] = useState<ITeamMemberTypeMap>({});
   const [speakers, setSpeakers] = useState<ITeamMemberTypeMap>({});
+  const teams = useTeams();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -143,7 +145,18 @@ export const Plans = () => {
                   </a>
                 </td>
                 <td>{speakers[plan.id].map((m) => m.name).join(", ")}</td>
-                <td>{worshipLeaders[plan.id].map((m) => m.name).join(", ")}</td>
+                <td>
+                  {worshipLeaders[plan.id]
+                    .map((m) => {
+                      const team = teams.find((t) =>
+                        t.members.some(
+                          (m2) => m2.id === m.personId && m2.isLeader
+                        )
+                      );
+                      return team ? `${m.name} (${team.name})` : m.name;
+                    })
+                    .join(", ")}
+                </td>
               </tr>
             ))}
           </tbody>

@@ -31,6 +31,7 @@ export interface IApiPlanTeamMember {
   type: string;
   id: string;
   attributes: IApiPlanTeamMemberAttributes;
+  relationships: IApiPlanTeamMemberRelationships;
 }
 
 export interface IApiPlanTeamMemberAttributes {
@@ -38,6 +39,15 @@ export interface IApiPlanTeamMemberAttributes {
   team_position_name: string;
   name: string;
   photo_thumbnail: string;
+}
+
+export interface IApiPlanTeamMemberRelationships {
+  person: {
+    data: {
+      type: string;
+      id: string;
+    };
+  };
 }
 
 export interface IApiBlockoutDate {
