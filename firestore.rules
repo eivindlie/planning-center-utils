@@ -24,9 +24,5 @@ service cloud.firestore {
     function userHasRole(role) {
       return request.auth != null && getUserData().role == role;
     }
-
-    match /personal/{userId} {
-      allow read, update, delete, create: if request.auth != null && request.auth.uid == userId
-    }
   }
 }
