@@ -5,12 +5,12 @@ import {
   getBlockoutDatesForPerson,
   getPlansBetween,
 } from "clients/serviceClient";
-import { IPlan, ITeamLocalStorage, ITeamMemberWithBlockoutDates } from "types";
+import { IPlan, ITeam, ITeamMemberWithBlockoutDates } from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
-import { LOCALSTORAGE_TEAMS_KEY } from "components/people/Teams";
 import { DateInput } from "components/_basis/DateInput";
 import { useEffect } from "react";
 import { getEndOfSemester, getStartOfSemester } from "utils/dates";
+import { useTeams } from "hooks/useTeams";
 
 const useStyles = createUseStyles({
   wrapper: {},
@@ -22,20 +22,23 @@ const useStyles = createUseStyles({
 });
 
 interface ITeamWithBlockouts {
-  id: number;
+  id: string;
   teamName: string;
   membersWithBlockouts: ITeamMemberWithBlockoutDates[];
 }
 
 export const Blockouts = () => {
-  const [teams, setTeams] = useState<ITeamWithBlockouts[]>([]);
+  const teams = useTeams();
+  const [teamsWithBlockouts, setTeamsWithBlockouts] = useState<
+    ITeamWithBlockouts[]
+  >([]);
   const [plans, setPlans] = useState<IPlan[]>([]);
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(getStartOfSemester());
   const [endDate, setEndDate] = useState(getEndOfSemester());
 
   const getBlockoutsForTeam = async (
-    team: ITeamLocalStorage
+    team: ITeam
   ): Promise<ITeamMemberWithBlockoutDates[]> => {
     return await Promise.all(
       team.members.map(
@@ -48,17 +51,10 @@ export const Blockouts = () => {
     );
   };
 
-  const load = useCallback(async () => {
+  const updateBlockouts = async () => {
+    if (!plans.length || !teams.length) return;
     setLoading(true);
-    setPlans(await getPlansBetween(startDate, endDate));
-    const teamsStringValue = localStorage.getItem(LOCALSTORAGE_TEAMS_KEY);
-    if (!teamsStringValue) {
-      return;
-    }
-    const teams = (JSON.parse(teamsStringValue) as ITeamLocalStorage[]).sort(
-      (a, b) => a.id - b.id
-    );
-    setTeams(
+    setTeamsWithBlockouts(
       await Promise.all(
         teams.map(
           async (team) =>
@@ -71,11 +67,18 @@ export const Blockouts = () => {
       )
     );
     setLoading(false);
-  }, [endDate, startDate]);
-
+  };
   useEffect(() => {
-    load();
-  }, [load]);
+    updateBlockouts();
+  }, [teams, plans]);
+
+  const loadPlans = useCallback(async () => {
+    setLoading(true);
+    setPlans(await getPlansBetween(startDate, endDate));
+  }, [endDate, startDate]);
+  useEffect(() => {
+    loadPlans();
+  }, [loadPlans]);
 
   const classes = useStyles();
   return (
@@ -83,11 +86,11 @@ export const Blockouts = () => {
       <div className={classes.dateInput}>
         <DateInput value={startDate} onChange={(date) => setStartDate(date)} />
         <DateInput value={endDate} onChange={(date) => setEndDate(date)} />
-        <Button onClick={() => load()}>Hent oversikt</Button>
+        <Button onClick={() => loadPlans()}>Hent oversikt</Button>
       </div>
       {loading && <Spinner />}
       {!loading &&
-        teams.map((team) => (
+        teamsWithBlockouts.map((team) => (
           <TeamBlockouts
             key={team.id}
             teamMembers={team.membersWithBlockouts}

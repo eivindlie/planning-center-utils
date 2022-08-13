@@ -5,7 +5,7 @@ import { NavMenu } from "components/navigation/NavMenu";
 import { PageHeader } from "./navigation/PageHeader";
 import { AuthUserContext } from "contexts/AuthUserContext";
 import { useState } from "react";
-import { getAuth, User } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const useStyles = createUseStyles({
   app: {

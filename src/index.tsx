@@ -12,7 +12,6 @@ import {
   signIn,
   signInToFirebase,
 } from "./utils/auth";
-import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC55XSmQ3-6jOnkXYthLsTjz-Og83Kphss",

@@ -1,11 +1,5 @@
 import { useAuthUser } from "contexts/AuthUserContext";
-import {
-  collection,
-  doc,
-  getDocs,
-  getFirestore,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { ITeam } from "types";
 

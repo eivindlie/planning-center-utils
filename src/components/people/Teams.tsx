@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Button } from "components";
-import { IPerson, ITeam, ITeamLocalStorage, ITeamMember } from "types";
+import { IPerson, ITeam, ITeamMember } from "types";
 import { PersonPicker } from "components/people/PersonPicker";
 import { TextInput } from "components/_basis/TextInput";
 import { COLORS } from "style/variables";
@@ -34,8 +34,6 @@ const useStyles = createUseStyles({
     borderTop: `1px solid ${COLORS.border}`,
   },
 });
-
-export const LOCALSTORAGE_TEAMS_KEY = "planningcenter.teams";
 
 export const Teams = () => {
   const teams = useTeams();

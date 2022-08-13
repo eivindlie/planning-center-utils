@@ -1,5 +1,4 @@
 import { ITokenResponse } from "types/auth";
-import * as auth from "firebase/auth";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 export const REDIRECT_PATH = `/oauth/callback`;
 

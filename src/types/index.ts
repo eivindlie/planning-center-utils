@@ -31,12 +31,6 @@ export interface ITeam {
   members: ITeamMember[];
 }
 
-export interface ITeamLocalStorage {
-  name: string;
-  id: number;
-  members: ITeamMember[];
-}
-
 export interface ITeamMember {
   id: string;
   fullName: string;
