@@ -115,21 +115,20 @@ const getOrCreateUser = async (pcAuthToken: string): Promise<UserRecord> => {
     .filter((i) => i.type === "Email")
     .find((e) => e.attributes.primary)?.attributes.address;
 
-  if (!primaryEmail) {
-    throw new Error("No email found - cannot create profile");
+  if (profile.data.attributes.status !== "active") {
+    throw new Error("User is not active in Planning Center");
   }
-
-  functions.logger.log("Primary email", primaryEmail);
 
   let userRecord: UserRecord | undefined;
   try {
-    userRecord = await admin.auth().getUserByEmail(primaryEmail);
+    userRecord = await admin.auth().getUser(profile.data.id);
   } catch {}
 
   functions.logger.log("Existing user record", userRecord);
 
   if (!userRecord) {
     userRecord = await admin.auth().createUser({
+      uid: profile.data.id,
       displayName: `${profile.data.attributes.first_name} ${
         profile.data.attributes.middle_name
           ? `${profile.data.attributes.middle_name} `

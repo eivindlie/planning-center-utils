@@ -10,6 +10,7 @@ export interface IProfileAttributes {
   first_name: string;
   middle_name?: string;
   last_name: string;
+  status: string;
 }
 
 export interface IProfileIncludedEmail {
