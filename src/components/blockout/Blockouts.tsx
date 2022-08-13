@@ -51,24 +51,24 @@ export const Blockouts = () => {
     );
   };
 
-  const updateBlockouts = async () => {
-    if (!plans.length || !teams.length) return;
-    setLoading(true);
-    setTeamsWithBlockouts(
-      await Promise.all(
-        teams.map(
-          async (team) =>
-            ({
-              id: team.id,
-              teamName: team.name,
-              membersWithBlockouts: await getBlockoutsForTeam(team),
-            } as ITeamWithBlockouts)
-        )
-      )
-    );
-    setLoading(false);
-  };
   useEffect(() => {
+    const updateBlockouts = async () => {
+      if (!plans.length || !teams.length) return;
+      setLoading(true);
+      setTeamsWithBlockouts(
+        await Promise.all(
+          teams.map(
+            async (team) =>
+              ({
+                id: team.id,
+                teamName: team.name,
+                membersWithBlockouts: await getBlockoutsForTeam(team),
+              } as ITeamWithBlockouts)
+          )
+        )
+      );
+      setLoading(false);
+    };
     updateBlockouts();
   }, [teams, plans]);
 
