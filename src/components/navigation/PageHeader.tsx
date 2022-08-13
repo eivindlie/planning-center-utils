@@ -1,4 +1,5 @@
 import { getProfile } from "clients/peopleClient";
+import { useMediaQuery } from "hooks/useMediaQuery";
 import { useEffect } from "react";
 import { useState } from "react";
 import { createUseStyles } from "react-jss";
@@ -10,6 +11,7 @@ const useStyles = createUseStyles({
     display: "flex",
     alignItems: "center",
     padding: "15px 25px",
+    gap: "10px",
     borderBottom: `2px solid ${COLORS.border}`,
   },
   title: {
@@ -19,10 +21,21 @@ const useStyles = createUseStyles({
   user: {
     marginLeft: "auto",
   },
+  navButton: {
+    cursor: "pointer",
+    background: "none",
+    border: "none",
+    color: "white",
+    fontSize: "2rem",
+  },
 });
 
-export const PageHeader = () => {
+interface IProps {
+  toggleNav: () => void;
+}
+export const PageHeader = ({ toggleNav }: IProps) => {
   const [profile, setProfile] = useState<IPerson | undefined>();
+  const isMobile = useMediaQuery("(max-width: 900px)");
 
   useEffect(() => {
     const init = async () => {
@@ -34,7 +47,14 @@ export const PageHeader = () => {
   const classes = useStyles();
   return (
     <header className={classes.header}>
-      <h1 className={classes.title}>Planning Center Utils</h1>
+      {isMobile && (
+        <button className={classes.navButton} onClick={toggleNav}>
+          <i className="las la-bars"></i>
+        </button>
+      )}
+      <h1 className={classes.title}>
+        {isMobile ? "" : "Planning Center Utils"}
+      </h1>
       <div className={classes.user}>
         {profile?.firstName}{" "}
         {profile?.middleName ? `${profile.middleName} ` : ""}

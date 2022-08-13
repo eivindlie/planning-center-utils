@@ -6,6 +6,7 @@ import { PageHeader } from "./navigation/PageHeader";
 import { AuthUserContext } from "contexts/AuthUserContext";
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
+import { useMediaQuery } from "hooks/useMediaQuery";
 
 const useStyles = createUseStyles({
   app: {
@@ -23,24 +24,31 @@ const useStyles = createUseStyles({
     flexGrow: 1,
     overflowY: "auto",
     padding: "20px",
+
+    "@media (max-width: 900px)": {
+      minWidth: "calc(100vw - 40px)",
+    },
   },
 });
 
 const App = () => {
   const [authUser, setAuthUser] = useState(getAuth().currentUser);
+  const isMobile = useMediaQuery("(max-width: 900px)");
+  const [showNav, setShowNav] = useState(false);
 
   getAuth().onAuthStateChanged((authUser) => {
     setAuthUser(authUser);
   });
 
-  const classes = useStyles();
+  const toggleNav = () => setShowNav(!showNav);
 
+  const classes = useStyles();
   return (
     <AuthUserContext.Provider value={authUser}>
       <div className={classes.app}>
-        <PageHeader />
+        <PageHeader toggleNav={toggleNav} />
         <div className={classes.wrapper}>
-          <NavMenu />
+          {(!isMobile || showNav) && <NavMenu />}
           <main className={classes.content}>
             <Routes />
           </main>
