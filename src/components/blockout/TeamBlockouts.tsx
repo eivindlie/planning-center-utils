@@ -76,7 +76,7 @@ export const TeamBlockouts = ({ teamName, teamMembers, plans }: IProps) => {
           <tr className={classes.totalRow}>
             <td className={classes.totalTitleCell}>Totalt</td>
             {plans.map((plan) => (
-              <td>
+              <td key={plan.id}>
                 {
                   teamMembers.filter((member) =>
                     member.blockoutDates.some(
