@@ -25,7 +25,7 @@ const useStyles = createUseStyles<
   blockoutContainer: {
     display: "grid",
     gridTemplateColumns: (props) =>
-      `repeat(${props.numberOfPlans + 1}, minmax(20px, max-content))`,
+      `max-content repeat(${props.numberOfPlans}, minmax(30px, max-content))`,
     "& > *": {
       border: "1px solid white",
       padding: "5px",
