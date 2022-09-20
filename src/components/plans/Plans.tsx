@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { getPlansBetween, getTeamMembersForPlan } from "clients/serviceClient";
-import { IPlan, IPlanTeamMember } from "types";
+import { IPlan } from "types";
 import { formatDate, getEndOfSemester, getStartOfSemester } from "utils/dates";
 import { Spinner } from "components/_basis/Spinner";
 import { createUseStyles } from "react-jss";
@@ -8,6 +8,10 @@ import { DateInput } from "components/_basis/DateInput";
 import { Button } from "components/_basis/Button";
 import { COLORS } from "style/variables";
 import { useTeams } from "hooks/useTeams";
+import {
+  createMapOfTeamMemberType,
+  ITeamMemberTypeMap,
+} from "utils/createMapOfTeamMemberType";
 
 const useStyles = createUseStyles({
   wrapper: {
@@ -43,33 +47,6 @@ const useStyles = createUseStyles({
     color: COLORS.background,
   },
 });
-
-interface ITeamMemberTypeMap {
-  [planId: string]: IPlanTeamMember[];
-}
-
-const createMapOfTeamMemberType = (
-  type: string,
-  plans: IPlan[],
-  teamMembersForAllPlans: IPlanTeamMember[][]
-): ITeamMemberTypeMap => {
-  return Object.assign(
-    {},
-    ...plans.map((plan, i) => {
-      const teamMembers = teamMembersForAllPlans[i].filter(
-        (m) => m.status !== "D"
-      );
-
-      const matchingMembers = teamMembers.filter(
-        (teamMember) => teamMember.teamPositionName === type
-      );
-
-      return {
-        [plan.id]: matchingMembers,
-      };
-    })
-  );
-};
 
 export const Plans = () => {
   const [plans, setPlans] = useState<IPlan[]>([]);

@@ -11,6 +11,7 @@ import { DateInput } from "components/_basis/DateInput";
 import { useEffect } from "react";
 import { getEndOfSemester, getStartOfSemester } from "utils/dates";
 import { useTeams } from "hooks/useTeams";
+import { PlanSummary } from "./PlanSummary";
 
 const useStyles = createUseStyles<
   "wrapper" | "dateInput" | "blockoutContainer",
@@ -112,6 +113,7 @@ export const Blockouts = () => {
               plans={plans}
             />
           ))}
+          <PlanSummary plans={plans} teams={teams} parentLoading={loading} />
         </div>
       )}
     </div>
