@@ -50,6 +50,12 @@ export interface ITeamMemberWithBlockoutDates {
   blockoutDates: IBlockoutDate[];
 }
 
+export interface ITeamWithBlockouts {
+  id: string;
+  teamName: string;
+  membersWithBlockouts: ITeamMemberWithBlockoutDates[];
+}
+
 export type UserRole = "admin" | "user" | null;
 
 export interface IFirebaseUserProfile {

@@ -5,13 +5,19 @@ import {
   getBlockoutDatesForPerson,
   getPlansBetween,
 } from "clients/serviceClient";
-import { IPlan, ITeam, ITeamMemberWithBlockoutDates } from "types";
+import {
+  IPlan,
+  ITeam,
+  ITeamMemberWithBlockoutDates,
+  ITeamWithBlockouts,
+} from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
 import { DateInput } from "components/_basis/DateInput";
 import { useEffect } from "react";
 import { getEndOfSemester, getStartOfSemester } from "utils/dates";
 import { useTeams } from "hooks/useTeams";
 import { PlanSummary } from "./PlanSummary";
+import { exportBlockoutsToExcel } from "utils/exportBlockoutsToExcel";
 
 const useStyles = createUseStyles<
   "wrapper" | "dateInput" | "blockoutContainer",
@@ -34,12 +40,6 @@ const useStyles = createUseStyles<
     },
   },
 });
-
-interface ITeamWithBlockouts {
-  id: string;
-  teamName: string;
-  membersWithBlockouts: ITeamMemberWithBlockoutDates[];
-}
 
 export const Blockouts = () => {
   const teams = useTeams();
@@ -101,6 +101,14 @@ export const Blockouts = () => {
         <DateInput value={startDate} onChange={(date) => setStartDate(date)} />
         <DateInput value={endDate} onChange={(date) => setEndDate(date)} />
         <Button onClick={() => loadPlans()}>Hent oversikt</Button>
+
+        {!loading && (
+          <Button
+            onClick={() => exportBlockoutsToExcel(teamsWithBlockouts, plans)}
+          >
+            Eksporter til Excel
+          </Button>
+        )}
       </div>
       {loading && <Spinner />}
       {!loading && (
