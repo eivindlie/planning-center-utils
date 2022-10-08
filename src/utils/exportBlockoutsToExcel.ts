@@ -1,31 +1,47 @@
 import { IPlan, ITeamWithBlockouts } from "types";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { formatDate } from "./dates";
 
 export const exportBlockoutsToExcel = (
   teams: ITeamWithBlockouts[],
   plans: IPlan[]
 ) => {
-  const workbook = XLSX.utils.book_new();
-  const worksheet = XLSX.utils.aoa_to_sheet(createRows(teams, plans));
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Fravær");
-  XLSX.writeFile(workbook, "fravær-lovsang.xlsx", { bookType: "xlsx" });
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet("Fravær");
+  addRows(sheet, teams, plans);
+  autofitColumns(sheet);
+  downloadWorkbook(workbook);
 };
 
-const createRows = (teams: ITeamWithBlockouts[], plans: IPlan[]) => {
-  const rows: (string | object)[][] = [];
-
-  rows.push(["Dato", ...plans.map((p) => formatDate(p.sortDate))]);
+const addRows = (
+  sheet: ExcelJS.Worksheet,
+  teams: ITeamWithBlockouts[],
+  plans: IPlan[]
+) => {
+  const datoRow = sheet.addRow([
+    "Dato",
+    ...plans.map((p) => formatDate(p.sortDate)),
+  ]);
+  datoRow.fill = {
+    type: "pattern",
+    pattern: "solid",
+    fgColor: { argb: "ff8eb7e3" },
+  };
+  sheet.addRow([]);
 
   for (let t in teams) {
     const team = teams[t];
-    rows.push([]);
-    rows.push([team.teamName]);
 
-    const teamStartRow = rows.length;
+    const teamNameRow = sheet.addRow([team.teamName]);
+    teamNameRow.font = {
+      bold: true,
+    };
+
+    const teamStartRow = teamNameRow.number + 1;
     for (let m in team.membersWithBlockouts) {
       const member = team.membersWithBlockouts[m];
-      rows.push([
+
+      sheet.addRow([
         member.member.fullName,
         ...plans.map((p) =>
           member.blockoutDates.some(
@@ -33,21 +49,66 @@ const createRows = (teams: ITeamWithBlockouts[], plans: IPlan[]) => {
               blockoutDate.startsAt <= p.sortDate &&
               blockoutDate.endsAt >= p.sortDate
           )
-            ? { v: 1, t: "n" }
+            ? 1
             : ""
         ),
       ]);
     }
-    rows.push([
+
+    const teamEndRow = teamStartRow + team.membersWithBlockouts.length - 1;
+    const sumRow = sheet.addRow([
       "Sum",
-      ...plans.map((plan, p) => ({
-        f: `SUM(${XLSX.utils.encode_col(p + 1)}${XLSX.utils.encode_row(
-          teamStartRow
-        )}:${XLSX.utils.encode_col(p + 1)}${XLSX.utils.encode_row(
-          rows.length - 1
-        )})`,
-      })),
+      ...plans.map((plan, p) => {
+        const col = sheet.getColumn(p + 2);
+        return {
+          formula: `SUM(${col.letter}${teamStartRow}:${col.letter}${teamEndRow})`,
+        };
+      }),
     ]);
+    sumRow.font = {
+      italic: true,
+    };
+    const separatorRow = sheet.addRow([""]);
+    separatorRow.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "ffc1c1c1" },
+    };
   }
-  return rows;
+};
+
+const autofitColumns = (worksheet: ExcelJS.Worksheet) => {
+  worksheet.columns.forEach((column) => {
+    var maxLength = 0;
+    column["eachCell"]!({ includeEmpty: true }, function (cell) {
+      var columnLength = cell.value ? cell.value.toString().length : 10;
+      if (columnLength > maxLength) {
+        maxLength = columnLength;
+      }
+    });
+    column.width = maxLength < 5 ? 5 : maxLength;
+  });
+};
+
+const downloadWorkbook = async (workbook: ExcelJS.Workbook) => {
+  const buffer = await workbook.xlsx.writeBuffer();
+  const base64String = btoa(
+    String.fromCharCode.apply(
+      null,
+      new Uint8Array(buffer) as unknown as number[]
+    )
+  );
+  console.log(base64String);
+  downloadBase64File(base64String, "fravær-lovsang.xlsx");
+};
+
+const downloadBase64File = (contentBase64: string, fileName: string) => {
+  const linkSource = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${contentBase64}`;
+  const downloadLink = document.createElement("a");
+  document.body.appendChild(downloadLink);
+
+  downloadLink.href = linkSource;
+  downloadLink.target = "_self";
+  downloadLink.download = fileName;
+  downloadLink.click();
 };
