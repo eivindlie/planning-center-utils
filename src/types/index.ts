@@ -16,6 +16,8 @@ export interface IPlanTeamMember {
   photoThumbnail: string;
 }
 
+export type PlanTeamMembersMap = { [planId: string]: IPlanTeamMember[] };
+
 export interface IPerson {
   id: string;
   givenName: string;

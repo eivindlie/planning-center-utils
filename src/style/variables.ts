@@ -30,6 +30,8 @@ export const COLORS = {
   dangerDark: "#cc0000",
   dangerDarker: "#a60000",
 
+  warning: "hsl(45, 100%, 50%)",
+
   border: "#333",
   borderHighlight: "#555",
   elementBackground: "#bbb",

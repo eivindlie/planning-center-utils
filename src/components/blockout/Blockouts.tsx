@@ -4,12 +4,14 @@ import { Button, Spinner } from "components";
 import {
   getBlockoutDatesForPerson,
   getPlansBetween,
+  getTeamMembersForPlan,
 } from "clients/serviceClient";
 import {
   IPlan,
   ITeam,
   ITeamMemberWithBlockoutDates,
   ITeamWithBlockouts,
+  PlanTeamMembersMap,
 } from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
 import { DateInput } from "components/_basis/DateInput";
@@ -47,6 +49,9 @@ export const Blockouts = () => {
     ITeamWithBlockouts[]
   >([]);
   const [plans, setPlans] = useState<IPlan[]>([]);
+  const [planTeamMembers, setPlanTeamMembers] = useState<PlanTeamMembersMap>(
+    {}
+  );
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(getStartOfSemester());
   const [endDate, setEndDate] = useState(getEndOfSemester());
@@ -88,7 +93,20 @@ export const Blockouts = () => {
 
   const loadPlans = useCallback(async () => {
     setLoading(true);
-    setPlans(await getPlansBetween(startDate, endDate));
+    const planResult = await getPlansBetween(startDate, endDate);
+    const planTeamMembersResult = (
+      await Promise.all(
+        planResult.map(async (plan) => ({
+          planId: plan.id,
+          teamMembers: await getTeamMembersForPlan(plan.id),
+        }))
+      )
+    ).reduce((dict, plan) => {
+      dict[plan.planId] = plan.teamMembers;
+      return dict;
+    }, {} as PlanTeamMembersMap);
+    setPlans(planResult);
+    setPlanTeamMembers(planTeamMembersResult);
   }, [endDate, startDate]);
   useEffect(() => {
     loadPlans();
@@ -119,6 +137,7 @@ export const Blockouts = () => {
               teamMembers={team.membersWithBlockouts}
               teamName={team.teamName}
               plans={plans}
+              planTeamMembers={planTeamMembers}
             />
           ))}
           <PlanSummary plans={plans} teams={teams} parentLoading={loading} />
