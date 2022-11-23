@@ -7,6 +7,10 @@ import { formatDate } from "utils/dates";
 const useStyles = createUseStyles({
   date: {
     writingMode: "vertical-lr",
+
+    "& > a": {
+      color: "inherit",
+    },
   },
   totalRow: {
     "& td": {
@@ -85,7 +89,13 @@ export const TeamBlockouts = ({
         <div></div>
         {plans.map((plan) => (
           <div key={plan.id} className={classes.date}>
-            {formatDate(plan.sortDate)}
+            <a
+              href={`https://planningcenteronline.com/plans/${plan.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {formatDate(plan.sortDate)}
+            </a>
           </div>
         ))}
 
