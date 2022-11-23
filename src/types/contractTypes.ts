@@ -48,6 +48,11 @@ export interface IApiPlanTeamMemberRelationships {
       id: string;
     };
   };
+  team: {
+    data: {
+      id: string;
+    };
+  };
 }
 
 export interface IApiBlockoutDate {

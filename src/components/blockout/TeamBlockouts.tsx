@@ -34,16 +34,7 @@ const useStyles = createUseStyles({
   },
 });
 
-const LOVSANG_TEAM_POSITIONS = [
-  "Akustisk Gitar",
-  "Bass",
-  "El-gitar",
-  "Keys",
-  "Saksofon",
-  "Teamleder",
-  "Trommer",
-  "Vokal",
-];
+const LOVSANG_TEAM_ID = "4668573";
 
 const isBlocked = (
   member: ITeamMemberWithBlockoutDates,
@@ -65,7 +56,8 @@ const isPartlyBlocked = (
   return planTeamMembers.some(
     (teamMember) =>
       teamMember.personId === member.member.id &&
-      !LOVSANG_TEAM_POSITIONS.includes(teamMember.teamPositionName)
+      teamMember.teamId !== LOVSANG_TEAM_ID &&
+      teamMember.status !== "D"
   );
 };
 

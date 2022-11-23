@@ -68,6 +68,7 @@ const mapPlanTeamMember = (
 ): IPlanTeamMember => ({
   id: planTeamMember.id,
   personId: planTeamMember.relationships.person.data.id,
+  teamId: planTeamMember.relationships.team.data.id,
   name: planTeamMember.attributes.name,
   status: planTeamMember.attributes.status,
   teamPositionName: planTeamMember.attributes.team_position_name,
