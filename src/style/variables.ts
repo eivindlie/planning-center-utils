@@ -12,6 +12,7 @@ const PALETTE = {
 
 export const COLORS = {
   background: "#000",
+  backgroundHighlight: "#444",
   foreground: "#ccc",
   foregroundLight: "#fff",
   foregroundHighlight: "#fff",

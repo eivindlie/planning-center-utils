@@ -2,9 +2,13 @@ import { Fragment } from "react";
 import { createUseStyles } from "react-jss";
 import { COLORS } from "style/variables";
 import { IPlan, ITeamMemberWithBlockoutDates, PlanTeamMembersMap } from "types";
+import { createMapOfTeamMemberType } from "utils/createMapOfTeamMemberType";
 import { formatDate } from "utils/dates";
 
 const useStyles = createUseStyles({
+  activeTeam: {
+    background: COLORS.backgroundHighlight
+  },
   date: {
     writingMode: "vertical-lr",
 
@@ -74,13 +78,21 @@ export const TeamBlockouts = ({
   planTeamMembers,
 }: IProps) => {
   const classes = useStyles();
+
+  const teamLeaderMap = createMapOfTeamMemberType("Teamleder", plans, plans.map(p => planTeamMembers[p.id]));
+
+  const isActiveTeam = (plan: IPlan) => {
+    const leaders = teamLeaderMap[plan.id];
+    return leaders.some(l => teamMembers.some(m => m.member.isLeader && l.personId === m.member.id));
+  }
+
   return (
     <>
       <h2 className={classes.title}>{teamName}</h2>
       <>
         <div></div>
         {plans.map((plan) => (
-          <div key={plan.id} className={classes.date}>
+          <div key={plan.id} className={`${classes.date} ${isActiveTeam(plan) ? classes.activeTeam : ''}`}>
             <a
               href={`https://planningcenteronline.com/plans/${plan.id}`}
               target="_blank"
@@ -98,11 +110,11 @@ export const TeamBlockouts = ({
               <div
                 key={plan.id}
                 className={
-                  isBlocked(member, plan)
+                  `${isActiveTeam(plan) ? classes.activeTeam : ''} ${isBlocked(member, plan)
                     ? classes.blocked
                     : isPartlyBlocked(member, plan, planTeamMembers)
                     ? classes.partlyBlocked
-                    : ""
+                    : ""}`
                 }
               ></div>
             ))}
@@ -111,7 +123,7 @@ export const TeamBlockouts = ({
         <>
           <div className={classes.totalTitleCell}>Totalt</div>
           {plans.map((plan) => (
-            <div key={plan.id}>
+            <div key={plan.id} className={isActiveTeam(plan) ? classes.activeTeam : ''}>
               {
                 teamMembers.filter(
                   (member) =>
