@@ -29,9 +29,14 @@ const sendRequest = async (
   });
 
   if (response.status === 429) {
-    window.alert(
-      "Planning Center synes visst vi har sendt litt mange forespørsler... Vent litt, og prøv på nytt."
-    );
+    const retryAfter = response.headers.get("Retry-After");
+    if (retryAfter) {
+      const delay = +retryAfter * 1.1;
+      console.log(`Too many requests, retrying in ${delay} seconds...`);
+      await new Promise((resolve) => setTimeout(resolve, delay * 1000));
+      return sendRequest(url, method);
+    }
+    throw new Error("Too many requests");
   }
 
   return response;
