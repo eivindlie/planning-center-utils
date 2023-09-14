@@ -130,18 +130,28 @@ export const Blockouts = () => {
       </div>
       {loading && <Spinner />}
       {!loading && (
-        <div className={classes.blockoutContainer}>
-          {teamsWithBlockouts.map((team) => (
-            <TeamBlockouts
-              key={team.id}
-              teamMembers={team.membersWithBlockouts}
-              teamName={team.teamName}
-              plans={plans}
-              planTeamMembers={planTeamMembers}
-            />
-          ))}
-          <PlanSummary plans={plans} teams={teams} parentLoading={loading} />
-        </div>
+        <>
+          <p style={{ maxWidth: "80ch" }}>
+            <strong>Obs.:</strong> Planning Center har ikke noe team-konsept, så
+            nedenfor vises hvilket team som spiller basert på hvem som er
+            teamleder på det møtet. Siden det hender at teamlederne har ansvar
+            for et møte uten at det er deres team som spiller kan det være at
+            det vises flere møter for et team enn det som er riktig 🙃
+          </p>
+
+          <div className={classes.blockoutContainer}>
+            {teamsWithBlockouts.map((team) => (
+              <TeamBlockouts
+                key={team.id}
+                teamMembers={team.membersWithBlockouts}
+                teamName={team.teamName}
+                plans={plans}
+                planTeamMembers={planTeamMembers}
+              />
+            ))}
+            <PlanSummary plans={plans} teams={teams} parentLoading={loading} />
+          </div>
+        </>
       )}
     </div>
   );
