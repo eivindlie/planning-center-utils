@@ -107,7 +107,7 @@ export const redirect = functions.https.onRequest(async (request, response) => {
     if (state["environment"] === "development") {
       url = "http://localhost:3000/oauth/callback";
     } else {
-      url = "https://planning-center.andreassen.info/oauth/callback";
+      url = "https://pc.prograd.no/oauth/callback";
     }
     response.redirect(`${url}?code=${request.query.code}`);
   });
