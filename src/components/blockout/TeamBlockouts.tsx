@@ -1,13 +1,19 @@
 import { Fragment } from "react";
 import { createUseStyles } from "react-jss";
 import { COLORS } from "style/variables";
-import { IPlan, ITeamMemberWithBlockoutDates, PlanTeamMembersMap } from "types";
+import {
+  IBlockoutDate,
+  IPlan,
+  IPlanTeamMember,
+  ITeamMemberWithBlockoutDates,
+  PlanTeamMembersMap,
+} from "types";
 import { createMapOfTeamMemberType } from "utils/createMapOfTeamMemberType";
 import { formatDate } from "utils/dates";
 
 const useStyles = createUseStyles({
   activeTeam: {
-    background: COLORS.backgroundHighlight
+    background: COLORS.backgroundHighlight,
   },
   date: {
     writingMode: "vertical-lr",
@@ -40,14 +46,35 @@ const useStyles = createUseStyles({
 
 const LOVSANG_TEAM_ID = "4668573";
 
+const getBlockout = (
+  member: ITeamMemberWithBlockoutDates,
+  plan: IPlan
+): IBlockoutDate | undefined => {
+  return member.blockoutDates.find(
+    (blockoutDate) =>
+      blockoutDate.startsAt <= plan.sortDate &&
+      blockoutDate.endsAt >= plan.sortDate
+  )!;
+};
+
 const isBlocked = (
   member: ITeamMemberWithBlockoutDates,
   plan: IPlan
 ): boolean => {
-  return member.blockoutDates.some(
-    (blockoutDate) =>
-      blockoutDate.startsAt <= plan.sortDate &&
-      blockoutDate.endsAt >= plan.sortDate
+  return getBlockout(member, plan) !== undefined;
+};
+
+const getOtherAssignment = (
+  member: ITeamMemberWithBlockoutDates,
+  plan: IPlan,
+  planTeamMembersMap: PlanTeamMembersMap
+): IPlanTeamMember | undefined => {
+  const planTeamMembers = planTeamMembersMap[plan.id] ?? [];
+  return planTeamMembers.find(
+    (teamMember) =>
+      teamMember.personId === member.member.id &&
+      teamMember.teamId !== LOVSANG_TEAM_ID &&
+      teamMember.status !== "D"
   );
 };
 
@@ -56,13 +83,7 @@ const isPartlyBlocked = (
   plan: IPlan,
   planTeamMembersMap: PlanTeamMembersMap
 ): boolean => {
-  const planTeamMembers = planTeamMembersMap[plan.id] ?? [];
-  return planTeamMembers.some(
-    (teamMember) =>
-      teamMember.personId === member.member.id &&
-      teamMember.teamId !== LOVSANG_TEAM_ID &&
-      teamMember.status !== "D"
-  );
+  return getOtherAssignment(member, plan, planTeamMembersMap) !== undefined;
 };
 
 export interface IProps {
@@ -79,12 +100,18 @@ export const TeamBlockouts = ({
 }: IProps) => {
   const classes = useStyles();
 
-  const teamLeaderMap = createMapOfTeamMemberType("Teamleder", plans, plans.map(p => planTeamMembers[p.id]));
+  const teamLeaderMap = createMapOfTeamMemberType(
+    "Teamleder",
+    plans,
+    plans.map((p) => planTeamMembers[p.id])
+  );
 
   const isActiveTeam = (plan: IPlan) => {
     const leaders = teamLeaderMap[plan.id];
-    return leaders.some(l => teamMembers.some(m => m.member.isLeader && l.personId === m.member.id));
-  }
+    return leaders.some((l) =>
+      teamMembers.some((m) => m.member.isLeader && l.personId === m.member.id)
+    );
+  };
 
   return (
     <>
@@ -92,7 +119,12 @@ export const TeamBlockouts = ({
       <>
         <div></div>
         {plans.map((plan) => (
-          <div key={plan.id} className={`${classes.date} ${isActiveTeam(plan) ? classes.activeTeam : ''}`}>
+          <div
+            key={plan.id}
+            className={`${classes.date} ${
+              isActiveTeam(plan) ? classes.activeTeam : ""
+            }`}
+          >
             <a
               href={`https://planningcenteronline.com/plans/${plan.id}`}
               target="_blank"
@@ -109,12 +141,26 @@ export const TeamBlockouts = ({
             {plans.map((plan) => (
               <div
                 key={plan.id}
-                className={
-                  `${isActiveTeam(plan) ? classes.activeTeam : ''} ${isBlocked(member, plan)
+                className={`${isActiveTeam(plan) ? classes.activeTeam : ""} ${
+                  isBlocked(member, plan)
                     ? classes.blocked
                     : isPartlyBlocked(member, plan, planTeamMembers)
                     ? classes.partlyBlocked
-                    : ""}`
+                    : ""
+                }`}
+                title={
+                  isBlocked(member, plan)
+                    ? `Blockout${
+                        getBlockout(member, plan)?.reason
+                          ? `: ${getBlockout(member, plan)?.reason}`
+                          : ""
+                      }`
+                    : isPartlyBlocked(member, plan, planTeamMembers)
+                    ? `Annen tjeneste: ${
+                        getOtherAssignment(member, plan, planTeamMembers)
+                          ?.teamPositionName
+                      }`
+                    : ""
                 }
               ></div>
             ))}
@@ -123,7 +169,10 @@ export const TeamBlockouts = ({
         <>
           <div className={classes.totalTitleCell}>Totalt</div>
           {plans.map((plan) => (
-            <div key={plan.id} className={isActiveTeam(plan) ? classes.activeTeam : ''}>
+            <div
+              key={plan.id}
+              className={isActiveTeam(plan) ? classes.activeTeam : ""}
+            >
               {
                 teamMembers.filter(
                   (member) =>
