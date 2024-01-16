@@ -12,10 +12,7 @@ const SCOPE = "people services";
 const REDIRECT_URI =
   "https://us-central1-planning-center-utilities.cloudfunctions.net/redirect";
 
-const CORS_WHITELIST = [
-  "http://localhost:3000",
-  "https://planning-center.andreassen.info",
-];
+const CORS_WHITELIST = ["http://localhost:3000", "https://pc.prograd.no"];
 
 admin.initializeApp(functions.config().firebase);
 
