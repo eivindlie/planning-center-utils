@@ -42,6 +42,9 @@ const useStyles = createUseStyles({
     marginTop: "30px",
     marginBottom: "10px",
   },
+  passedDate: {
+    filter: "brightness(0.4)",
+  },
 });
 
 const LOVSANG_TEAM_ID = "4668573";
@@ -123,7 +126,7 @@ export const TeamBlockouts = ({
             key={plan.id}
             className={`${classes.date} ${
               isActiveTeam(plan) ? classes.activeTeam : ""
-            }`}
+            } ${plan.sortDate < new Date() ? classes.passedDate : ""}`}
           >
             <a
               href={`https://planningcenteronline.com/plans/${plan.id}`}
@@ -147,7 +150,7 @@ export const TeamBlockouts = ({
                     : isPartlyBlocked(member, plan, planTeamMembers)
                     ? classes.partlyBlocked
                     : ""
-                }`}
+                }  ${plan.sortDate < new Date() ? classes.passedDate : ""}`}
                 title={
                   isBlocked(member, plan)
                     ? `Blockout${
@@ -171,7 +174,9 @@ export const TeamBlockouts = ({
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={isActiveTeam(plan) ? classes.activeTeam : ""}
+              className={`${isActiveTeam(plan) ? classes.activeTeam : ""}  ${
+                plan.sortDate < new Date() ? classes.passedDate : ""
+              }`}
             >
               {
                 teamMembers.filter(
