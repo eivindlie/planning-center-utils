@@ -36,6 +36,9 @@ const useStyles = createUseStyles({
   partlyBlocked: {
     background: COLORS.warning,
   },
+  confirmed: {
+    background: COLORS.success,
+  },
   title: {
     gridColumn: "1 / -1",
     border: "none !important",
@@ -87,6 +90,21 @@ const isPartlyBlocked = (
   planTeamMembersMap: PlanTeamMembersMap
 ): boolean => {
   return getOtherAssignment(member, plan, planTeamMembersMap) !== undefined;
+};
+
+const isConfirmed = (
+  member: ITeamMemberWithBlockoutDates,
+  plan: IPlan,
+  planTeamMembersMap: PlanTeamMembersMap
+): boolean => {
+  return (
+    planTeamMembersMap[plan.id]?.find(
+      (teamMember) =>
+        teamMember.personId === member.member.id &&
+        teamMember.teamId === LOVSANG_TEAM_ID &&
+        teamMember.status === "C"
+    ) !== undefined
+  );
 };
 
 export interface IProps {
@@ -149,6 +167,8 @@ export const TeamBlockouts = ({
                     ? classes.blocked
                     : isPartlyBlocked(member, plan, planTeamMembers)
                     ? classes.partlyBlocked
+                    : isConfirmed(member, plan, planTeamMembers)
+                    ? classes.confirmed
                     : ""
                 }  ${plan.sortDate < new Date() ? classes.passedDate : ""}`}
                 title={

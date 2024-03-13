@@ -33,6 +33,8 @@ export const COLORS = {
 
   warning: "hsl(45, 100%, 50%)",
 
+  success: "#00aa00",
+
   border: "#333",
   borderHighlight: "#555",
   elementBackground: "#bbb",
