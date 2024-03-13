@@ -172,7 +172,9 @@ export const TeamBlockouts = ({
                     : ""
                 }  ${plan.sortDate < new Date() ? classes.passedDate : ""}`}
                 title={
-                  isBlocked(member, plan)
+                  isConfirmed(member, plan, planTeamMembers)
+                    ? "Bekreftet"
+                    : isBlocked(member, plan)
                     ? `Blockout${
                         getBlockout(member, plan)?.reason
                           ? `: ${getBlockout(member, plan)?.reason}`
