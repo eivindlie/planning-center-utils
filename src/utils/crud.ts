@@ -11,7 +11,7 @@ export const get = async (url: string): Promise<any> => {
       `${url}${sep}offset=${responseContent.meta.next.offset}`
     );
     responseContent = await response.json();
-    data.push(...responseContent.data);
+    data.push(...responseContent.data.map(convertNullToUndefined));
   }
 
   return data;
@@ -40,4 +40,19 @@ const sendRequest = async (
   }
 
   return response;
+};
+
+const convertNullToUndefined = (obj: any): any => {
+  if (obj === null) {
+    return undefined;
+  }
+  if (typeof obj === "object") {
+    return Object.fromEntries(
+      Object.entries(obj).map(([key, value]) => [
+        key,
+        convertNullToUndefined(value),
+      ])
+    );
+  }
+  return obj;
 };

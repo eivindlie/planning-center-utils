@@ -21,6 +21,7 @@ export const NavMenu = () => {
       <NavElement href="/teams">Teams</NavElement>
       <NavElement href="/blockouts">Blockout</NavElement>
       <NavElement href="/plans">Turnus</NavElement>
+      <NavElement href="/ccli">CCLI</NavElement>
     </nav>
   );
 };

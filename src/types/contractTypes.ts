@@ -13,6 +13,27 @@ export interface IPersonAttributes {
   child: boolean;
 }
 
+export interface IApiSong {
+  type: string;
+  id: string;
+  attributes: IApiSongAttributes;
+}
+
+export interface IApiSongAttributes {
+  admin: string;
+  author: string;
+  ccli_number: number;
+  copyright: string;
+  created_at: string;
+  hidden: boolean;
+  last_scheduled_at: string;
+  last_scheduled_at_short_dates: string;
+  notes: string;
+  themes: string;
+  title: string;
+  updated_at: string;
+}
+
 export interface IApiPlan {
   type: string;
   id: string;

@@ -66,3 +66,12 @@ export interface IFirebaseUserProfile {
   email: string;
   role: UserRole;
 }
+
+export interface ISong {
+  id: string;
+  title: string;
+  author: string;
+  copyright: string;
+  ccliNumber: number | undefined;
+  lastScheduledAt: Date | undefined;
+}
