@@ -41,9 +41,9 @@ export const SongsWithoutCCLI = () => {
           <table className={classes.table}>
             <thead>
               <tr>
-                <th className={classes.th}>Title</th>
-                <th className={classes.th}>Author</th>
-                <th className={classes.th}>Last Scheduled</th>
+                <th className={classes.th}>Navn</th>
+                <th className={classes.th}>Forfatter</th>
+                <th className={classes.th}>Sist brukt</th>
               </tr>
             </thead>
             <tbody>
