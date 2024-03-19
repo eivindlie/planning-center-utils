@@ -16,6 +16,9 @@ const useStyles = createUseStyles({
     border: "1px solid #ddd",
     padding: "8px",
   },
+  link: {
+    color: "white",
+  },
 });
 
 export const SongsWithoutCCLI = () => {
@@ -23,6 +26,9 @@ export const SongsWithoutCCLI = () => {
   const songsWithoutCcli = songs.filter((s) => !s.ccliNumber);
 
   const classes = useStyles();
+
+  const songLink = (songId: string) =>
+    `https://planningcenteronline.com/songs/${songId}`;
 
   return (
     <div>
@@ -49,7 +55,16 @@ export const SongsWithoutCCLI = () => {
                 )
                 .map((song) => (
                   <tr key={song.id}>
-                    <td className={classes.td}>{song.title}</td>
+                    <td className={classes.td}>
+                      <a
+                        className={classes.link}
+                        href={songLink(song.id)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {song.title}
+                      </a>
+                    </td>
                     <td className={classes.td}>{song.author}</td>
                     <td className={classes.td}>
                       {song.lastScheduledAt?.toLocaleDateString()}
