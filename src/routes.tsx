@@ -2,7 +2,7 @@ import { Plans } from "components/plans/Plans";
 import { Navigate, Route, Routes as BrowserRoutes } from "react-router-dom";
 import { Teams } from "./components";
 import { Blockouts } from "./components/blockout/Blockouts";
-import { SongsWithoutCCLI } from "components/songs/SongsWithoutCCCLI";
+import { SongsWithoutCCLI } from "components/songs/SongsWithoutCCLI";
 import { Spotify } from "components/spotify/Spotify";
 
 export const Routes = () => {

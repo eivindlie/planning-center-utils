@@ -34,7 +34,7 @@ export const SongsWithoutCCLI = () => {
   const searchLink = (song: ISong) =>
     `https://songselect.ccli.com/search/results?search=${encodeURIComponent(
       song.title
-    )}`;
+    )}&expandToAllSongs=1`;
 
   return (
     <div>
