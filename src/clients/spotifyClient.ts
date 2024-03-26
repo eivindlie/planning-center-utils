@@ -2,7 +2,7 @@ import { SimplifiedPlaylist, SpotifyApi } from "@spotify/web-api-ts-sdk";
 
 const spotifySdk = SpotifyApi.withUserAuthorization(
   "d08a4da574ec49cdb5ffdd50602834eb",
-  "http://localhost:3000/spotify",
+  window.location.origin + "/spotify",
   ["playlist-read-private", "playlist-read-collaborative"]
 );
 
