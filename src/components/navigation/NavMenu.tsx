@@ -22,6 +22,7 @@ export const NavMenu = () => {
       <NavElement href="/blockouts">Blockout</NavElement>
       <NavElement href="/plans">Turnus</NavElement>
       <NavElement href="/ccli">CCLI</NavElement>
+      <NavElement href="/spotify">Spotify</NavElement>
     </nav>
   );
 };
