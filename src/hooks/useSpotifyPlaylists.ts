@@ -1,5 +1,5 @@
 import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk";
-import { getPlaylists } from "clients/spotifyClient";
+import { getAllUsersPlaylists } from "clients/spotifyClient";
 import { useState, useEffect } from "react";
 
 export const useSpotifyPlaylists = () => {
@@ -8,7 +8,7 @@ export const useSpotifyPlaylists = () => {
 
   useEffect(() => {
     setLoading(true);
-    getPlaylists()
+    getAllUsersPlaylists()
       .then((playlists) => {
         setPlaylists(playlists);
         setLoading(false);

@@ -6,6 +6,18 @@ const spotifySdk = SpotifyApi.withUserAuthorization(
   ["playlist-read-private", "playlist-read-collaborative"]
 );
 
-export const getPlaylists = async (): Promise<SimplifiedPlaylist[]> => {
-  return (await spotifySdk.currentUser.playlists.playlists(10)).items;
+export const getAllUsersPlaylists = async (): Promise<SimplifiedPlaylist[]> => {
+  const PAGE_SIZE = 50;
+  let response = await spotifySdk.currentUser.playlists.playlists(PAGE_SIZE);
+  const result = [...response.items];
+  let offset = 0;
+  while (response.next) {
+    offset += PAGE_SIZE;
+    response = await spotifySdk.currentUser.playlists.playlists(
+      PAGE_SIZE,
+      offset
+    );
+    result.push(...response.items);
+  }
+  return result;
 };
