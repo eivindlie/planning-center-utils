@@ -22,6 +22,11 @@ const useStyles = createUseStyles({
       color: "inherit",
     },
   },
+  memberName: {
+    "& > a": {
+      color: "inherit",
+    },
+  },
   totalRow: {
     "& td": {
       borderTop: `3px solid ${COLORS.foreground}`,
@@ -158,7 +163,7 @@ export const TeamBlockouts = ({
 
         {teamMembers.map((member) => (
           <Fragment key={member.member.id}>
-            <div>
+            <div className={classes.memberName}>
               <a
                 href={`https://planningcenteronline.com/people/${member.member.id}`}
                 target="_blank"
