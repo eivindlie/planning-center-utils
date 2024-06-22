@@ -165,7 +165,7 @@ export const TeamBlockouts = ({
           <Fragment key={member.member.id}>
             <div className={classes.memberName}>
               <a
-                href={`https://planningcenteronline.com/people/${member.member.id}`}
+                href={`https://planningcenteronline.com/people/AC${member.member.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
