@@ -158,7 +158,15 @@ export const TeamBlockouts = ({
 
         {teamMembers.map((member) => (
           <Fragment key={member.member.id}>
-            <div>{member.member.fullName}</div>
+            <div>
+              <a
+                href={`https://planningcenteronline.com/people/${member.member.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {member.member.fullName}
+              </a>
+            </div>
             {plans.map((plan) => (
               <div
                 key={plan.id}
