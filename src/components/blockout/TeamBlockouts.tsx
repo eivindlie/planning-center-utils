@@ -176,12 +176,12 @@ export const TeamBlockouts = ({
               <div
                 key={plan.id}
                 className={`${isActiveTeam(plan) ? classes.activeTeam : ""} ${
-                  isBlocked(member, plan)
+                  isConfirmed(member, plan, planTeamMembers)
+                    ? classes.confirmed
+                    : isBlocked(member, plan)
                     ? classes.blocked
                     : isPartlyBlocked(member, plan, planTeamMembers)
                     ? classes.partlyBlocked
-                    : isConfirmed(member, plan, planTeamMembers)
-                    ? classes.confirmed
                     : ""
                 }  ${plan.sortDate < new Date() ? classes.passedDate : ""}`}
                 title={
