@@ -112,6 +112,21 @@ const isConfirmed = (
   );
 };
 
+const isDeclined = (
+  member: ITeamMemberWithBlockoutDates,
+  plan: IPlan,
+  planTeamMembersMap: PlanTeamMembersMap
+): boolean => {
+  return (
+    planTeamMembersMap[plan.id]?.find(
+      (teamMember) =>
+        teamMember.personId === member.member.id &&
+        teamMember.teamId === LOVSANG_TEAM_ID &&
+        teamMember.status === "D"
+    ) !== undefined
+  );
+};
+
 export interface IProps {
   teamMembers: ITeamMemberWithBlockoutDates[];
   teamName: string;
@@ -180,6 +195,8 @@ export const TeamBlockouts = ({
                     ? classes.confirmed
                     : isBlocked(member, plan)
                     ? classes.blocked
+                    : isDeclined(member, plan, planTeamMembers)
+                    ? classes.blocked
                     : isPartlyBlocked(member, plan, planTeamMembers)
                     ? classes.partlyBlocked
                     : ""
@@ -193,6 +210,8 @@ export const TeamBlockouts = ({
                           ? `: ${getBlockout(member, plan)?.reason}`
                           : ""
                       }`
+                    : isDeclined(member, plan, planTeamMembers)
+                    ? "Avslått"
                     : isPartlyBlocked(member, plan, planTeamMembers)
                     ? `Annen tjeneste: ${
                         getOtherAssignment(member, plan, planTeamMembers)
