@@ -2,13 +2,13 @@ export type BlockoutMap = {
   [team: Team]: number[][];
 };
 
-export type Team = number;
+export type Team = string;
 
-export type Chromosome = number[];
+export type Chromosome = Team[];
 
-export type OtherTeam = -1;
+export type OtherTeam = "";
 
-export type LockedDatesMask = (number | undefined | OtherTeam)[];
+export type LockedDatesMask = (Team | undefined | OtherTeam)[];
 
 export type AutoplannerConfig = {
   teams: Team[];
