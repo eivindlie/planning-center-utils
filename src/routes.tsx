@@ -4,6 +4,7 @@ import { Teams } from "./components";
 import { Blockouts } from "./components/blockout/Blockouts";
 import { SongsWithoutCCLI } from "components/songs/SongsWithoutCCLI";
 import { Spotify } from "components/spotify/Spotify";
+import { Autoplanner } from "components/autoplanner/Autoplanner";
 
 export const Routes = () => {
   return (
@@ -14,6 +15,7 @@ export const Routes = () => {
       <Route path={"/plans"} element={<Plans />} />
       <Route path={"/ccli"} element={<SongsWithoutCCLI />} />
       <Route path={"/spotify"} element={<Spotify />} />
+      <Route path={"/autoplanner"} element={<Autoplanner />} />
     </BrowserRoutes>
   );
 };
