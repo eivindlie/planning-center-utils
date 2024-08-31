@@ -36,8 +36,8 @@ const replaceMutation: MutationFunction = (chromosome, config) => {
 
 const MUTATIONS: [MutationFunction, number][] = [
   [swapMutation, 0.5],
-  [shiftMutation, 0.3],
-  [replaceMutation, 0.2],
+  [shiftMutation, 0],
+  [replaceMutation, 1],
 ];
 
 export const mutate = (chromosome: Chromosome, config: AutoplannerConfig) => {

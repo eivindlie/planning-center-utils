@@ -3,6 +3,12 @@ import { mutate } from "./mutation";
 import { calculateScore } from "./scoring";
 import { TEST_CONFIG } from "./testData";
 import { AutoplannerConfig, Chromosome } from "./types";
+import { applyLockedDates } from "./utils";
+
+const ELITE_SIZE = 10;
+const POPULATION_SIZE = 100;
+const MUTATION_RATE = 0.3;
+const GENERATIONS = 100;
 
 const createRandomChromosome = (
   length: number,
@@ -66,20 +72,17 @@ const mutatePopulation = (
 };
 
 export const solve = () => {
-  const eliteSize = 10;
-  const populationSize = 100;
-  const mutationRate = 0.1;
   const config = TEST_CONFIG;
-  let population = createInitialPopulation(populationSize, config);
+  let population = createInitialPopulation(POPULATION_SIZE, config);
   let scores = population.map((chromosome) =>
     calculateScore(chromosome, config)
   );
   console.log(`Initial best score: ${Math.min(...scores)}`);
 
-  for (let i = 0; i < 100; i++) {
-    const matingPool = selection(population, scores, eliteSize);
-    const children = recombine(matingPool, eliteSize);
-    const newPopulation = mutatePopulation(children, mutationRate, config);
+  for (let i = 0; i < GENERATIONS; i++) {
+    const matingPool = selection(population, scores, ELITE_SIZE);
+    const children = recombine(matingPool, ELITE_SIZE);
+    const newPopulation = mutatePopulation(children, MUTATION_RATE, config);
     const newScores = newPopulation.map((chromosome) =>
       calculateScore(chromosome, config)
     );
@@ -87,4 +90,11 @@ export const solve = () => {
     population = newPopulation;
     scores = newScores;
   }
+  const bestIndex = scores.indexOf(Math.min(...scores));
+  const bestChromosome = applyLockedDates(population[bestIndex], config);
+  calculateScore(bestChromosome, config, true);
+  console.log("Best chromosome:");
+  console.log(bestChromosome);
+  console.log("Best score:");
+  console.log(scores[bestIndex]);
 };

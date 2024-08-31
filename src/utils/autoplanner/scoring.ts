@@ -1,9 +1,9 @@
 import { ScoringFunction } from "./types";
-import { findAllIndexes } from "./utils";
+import { applyLockedDates, findAllIndexes } from "./utils";
 
 const calculateTeamAbsences: ScoringFunction = (chromosome, config) => {
   const { blockouts } = config;
-  return chromosome
+  const score = chromosome
     .map((team, date) =>
       team === ""
         ? 0
@@ -13,24 +13,31 @@ const calculateTeamAbsences: ScoringFunction = (chromosome, config) => {
           blockouts[team].length
     )
     .reduce((acc, teamAbsences) => acc + teamAbsences, 0);
+  return score;
 };
 
 const calculateAverageLengthBetweenTeams: ScoringFunction = (
   chromosome,
   config
 ) => {
-  // Find interval until next time each team is scheduled for each date
-  // TODO This implementation does not account for time before first appearance...
-  const intervals = chromosome.map((team, index) => {
-    if (team === "") return 0;
-    const remainingDates = chromosome.slice(index + 1);
-    const nextIndex = remainingDates.indexOf(team);
-    return nextIndex === -1 ? remainingDates.length : nextIndex + 1;
-  });
-  return intervals.reduce(
-    (acc, interval) => acc + Math.pow(interval - config.teams.length, 2),
-    0
+  // Find all intervals between team appearances (including at the start and end of the chromosome)
+  const intervals: number[] = [];
+  for (const team of config.teams) {
+    const teamAppearances = [0, ...findAllIndexes(chromosome, team)];
+    teamAppearances.forEach((date, index) => {
+      const nextIndex = teamAppearances[index + 1];
+      intervals.push(
+        nextIndex === undefined ? chromosome.length - date : nextIndex - date
+      );
+    });
+  }
+  const score = Math.sqrt(
+    intervals.reduce(
+      (acc, interval) => acc + Math.pow(interval - config.teams.length, 2),
+      0
+    )
   );
+  return score;
 };
 
 const calculateTotalDifferenceBetweenTeamAppearances: ScoringFunction = (
@@ -42,11 +49,13 @@ const calculateTotalDifferenceBetweenTeamAppearances: ScoringFunction = (
   const appearances = config.teams.map((team) =>
     chromosome.reduce((acc, t) => acc + (t === team ? 1 : 0), 0)
   );
-  return appearances
+  const score = appearances
     .map((acc, index) =>
       Math.abs(acc - appearances[(index + 1) % appearances.length])
     )
     .reduce((acc, diff) => acc + diff, 0);
+
+  return score;
 };
 
 const calculateAverageTimesMissingPerPerson: ScoringFunction = (
@@ -70,18 +79,29 @@ const calculateAverageTimesMissingPerPerson: ScoringFunction = (
       blockoutsPerMember.length
     );
   });
-  return scorePerTeam.reduce((acc, score) => acc + score, 0);
+  const score = Math.sqrt(scorePerTeam.reduce((acc, score) => acc + score, 0));
+
+  return score;
 };
 
 const SCORING_FUNCTIONS: [ScoringFunction, number][] = [
-  [calculateTeamAbsences, 1],
+  [calculateTeamAbsences, 4],
   [calculateAverageLengthBetweenTeams, 1],
-  [calculateTotalDifferenceBetweenTeamAppearances, 1],
-  [calculateAverageTimesMissingPerPerson, 1],
+  [calculateTotalDifferenceBetweenTeamAppearances, 2],
+  [calculateAverageTimesMissingPerPerson, 2],
 ];
 
-export const calculateScore: ScoringFunction = (chromosome, config) => {
-  return SCORING_FUNCTIONS.map(
-    ([fn, weight]) => fn(chromosome, config) * weight
-  ).reduce((acc, score) => acc + score, 0);
+export const calculateScore: ScoringFunction = (
+  chromosome,
+  config,
+  debug = false
+) => {
+  const chromosomeWithLockedDates = applyLockedDates(chromosome, config);
+  return SCORING_FUNCTIONS.map(([fn, weight]) => {
+    const score = fn(chromosomeWithLockedDates, config, debug) * weight;
+    if (debug) {
+      console.log(`${fn.name} score: ${score}`);
+    }
+    return score;
+  }).reduce((acc, score) => acc + score, 0);
 };

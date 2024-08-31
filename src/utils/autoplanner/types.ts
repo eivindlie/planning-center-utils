@@ -18,5 +18,6 @@ export type AutoplannerConfig = {
 
 export type ScoringFunction = (
   chromosome: Chromosome,
-  config: AutoplannerConfig
+  config: AutoplannerConfig,
+  debug?: boolean
 ) => number;

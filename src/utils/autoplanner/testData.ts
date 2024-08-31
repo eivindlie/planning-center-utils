@@ -31,7 +31,7 @@ export const TEST_CONFIG: AutoplannerConfig = {
   lockedDates: [
     "",
     "",
-    "trubadurer",
+    undefined, //"trubadurer",
     undefined,
     undefined,
     "", // Studentweekend
