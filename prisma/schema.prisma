@@ -20,6 +20,7 @@ model Member {
     team        Team?   @relation(fields: [teamId], references: [id])
     teamId      String?
     blockouts   Blockout[]
+    user        User?
 }
 
 model Blockout {
@@ -39,4 +40,13 @@ model Plan {
     title       String
     date        DateTime
     url         String
+}
+
+model User {
+    id          String @default(cuid())     @id
+    email       String
+    name        String
+    member      Member? @relation(fields: [memberId], references: [id])
+    memberId    String? @unique
+    activated   Boolean @default(false)
 }
