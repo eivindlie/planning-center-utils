@@ -1,4 +1,4 @@
-import { LM_LOVSANG_TEAM_ID } from "@/config/pcConstants";
+import { LM_LOVSANG_TEAM_ID, LM_SERVICE_TYPE_ID } from "@/config/pcConstants";
 import { getPcEndpoint } from "./pcClient";
 import prisma from "@/prisma/client";
 
@@ -50,7 +50,30 @@ const exportBlockouts = async () => {
   }
 };
 
+const exportPlans = async () => {
+  console.log("Exporting plans");
+  const result = await getPcEndpoint(
+    `service_types/${LM_SERVICE_TYPE_ID}/plans`
+  );
+  for (const plan of result.data) {
+    const { id, attributes } = plan;
+    if (await prisma.plan.findFirst({ where: { pcId: id as string } }))
+      continue;
+
+    await prisma.plan.create({
+      data: {
+        pcId: id as string,
+        title: (attributes.title as string | undefined) ?? "",
+        date: new Date(attributes.sort_date as string),
+        seriesTitle: (attributes.series_title as string | undefined) ?? "",
+        url: attributes.planning_center_url as string,
+      },
+    });
+  }
+};
+
 export const runExport = async () => {
+  await exportPlans();
   await exportTeamMembers();
   await exportBlockouts();
 };

@@ -23,11 +23,20 @@ model Member {
 }
 
 model Blockout {
-    id          String  @default(cuid())      @id
+    id          String  @default(cuid())    @id
     pcId        String
     reason      String?
     startsAt    DateTime
     endsAt      DateTime
     member      Member  @relation(fields: [memberId], references: [id])
     memberId    String
+}
+
+model Plan {
+    id          String  @default(cuid())    @id
+    pcId        String
+    seriesTitle String
+    title       String
+    date        DateTime
+    url         String
 }
