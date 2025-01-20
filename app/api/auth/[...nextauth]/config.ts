@@ -12,12 +12,15 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ account, profile }) {
       if (account?.provider === "google") {
+        if (!profile?.email) {
+          return false;
+        }
         const userFromDb = await prisma.user.findFirst({
-          where: { email: profile?.email! },
+          where: { email: profile.email },
         });
         if (!userFromDb) {
           await prisma.user.create({
-            data: { email: profile?.email!, name: profile?.name! },
+            data: { email: profile.email, name: profile.name ?? ""},
           });
         }
       }
