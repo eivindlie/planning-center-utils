@@ -1,22 +1,14 @@
 import { useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Button, Spinner } from "components";
-import {
-  getBlockoutDatesForPerson,
-} from "clients/serviceClient";
-import {
-  ITeam,
-  ITeamMemberWithBlockoutDates,
-  ITeamWithBlockouts,
-} from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
 import { DateInput } from "components/_basis/DateInput";
-import { useEffect } from "react";
 import { getEndOfSemester, getStartOfSemester } from "utils/dates";
 import { useTeams } from "hooks/useTeams";
 import { PlanSummary } from "./PlanSummary";
 import { exportBlockoutsToExcel } from "utils/exportBlockoutsToExcel";
 import { usePlans } from "hooks/usePlans";
+import { useTeamsWithBlockouts } from "hooks/useTeamsWithBlockouts";
 
 const useStyles = createUseStyles<
   "wrapper" | "dateInput" | "blockoutContainer",
@@ -41,56 +33,18 @@ const useStyles = createUseStyles<
 });
 
 export const Blockouts = () => {
-  const teams = useTeams();
-  const [teamsWithBlockouts, setTeamsWithBlockouts] = useState<
-    ITeamWithBlockouts[]
-  >([]);
-  const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(getStartOfSemester());
   const [endDate, setEndDate] = useState(getEndOfSemester());
+  const teams = useTeams();
   const {
     plans,
     planTeamMembers,
     loading: plansLoading,
     loadPlans,
   } = usePlans(startDate, endDate);
-
-  const isLoading = loading || plansLoading;
-
-  const getBlockoutsForTeam = async (
-    team: ITeam
-  ): Promise<ITeamMemberWithBlockoutDates[]> => {
-    return await Promise.all(
-      team.members.map(
-        async (member) =>
-          ({
-            member: member,
-            blockoutDates: await getBlockoutDatesForPerson(member.id),
-          } as ITeamMemberWithBlockoutDates)
-      )
-    );
-  };
-
-  useEffect(() => {
-    const updateBlockouts = async () => {
-      if (!plans.length || !teams.length) return;
-      setLoading(true);
-      setTeamsWithBlockouts(
-        await Promise.all(
-          teams.map(
-            async (team) =>
-              ({
-                id: team.id,
-                teamName: team.name,
-                membersWithBlockouts: await getBlockoutsForTeam(team),
-              } as ITeamWithBlockouts)
-          )
-        )
-      );
-      setLoading(false);
-    };
-    updateBlockouts();
-  }, [teams, plans]);
+  const { teamsWithBlockouts, loading: teamsWithBlockoutsLoading } =
+    useTeamsWithBlockouts(teams, plans);
+  const loading = teamsWithBlockoutsLoading || plansLoading;
 
   const classes = useStyles({ numberOfPlans: plans.length });
   return (
@@ -100,7 +54,7 @@ export const Blockouts = () => {
         <DateInput value={endDate} onChange={(date) => setEndDate(date)} />
         <Button onClick={() => loadPlans()}>Hent oversikt</Button>
 
-        {!isLoading && (
+        {!loading && (
           <Button
             onClick={() => exportBlockoutsToExcel(teamsWithBlockouts, plans)}
           >
@@ -108,8 +62,8 @@ export const Blockouts = () => {
           </Button>
         )}
       </div>
-      {isLoading && <Spinner />}
-      {!isLoading && (
+      {loading && <Spinner />}
+      {!loading && (
         <>
           <p style={{ maxWidth: "80ch" }}>
             <strong>Obs.:</strong> Planning Center har ikke noe team-konsept, så
