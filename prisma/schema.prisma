@@ -14,9 +14,20 @@ model Team {
 }
 
 model Member {
-    id      String  @default(cuid())    @id
-    pcId    String
-    name    String
-    team    Team?   @relation(fields: [teamId], references: [id])
-    teamId  String?
+    id          String  @default(cuid())    @id
+    pcId        String
+    name        String
+    team        Team?   @relation(fields: [teamId], references: [id])
+    teamId      String?
+    blockouts   Blockout[]
+}
+
+model Blockout {
+    id          String  @default(cuid())      @id
+    pcId        String
+    reason      String?
+    startsAt    DateTime
+    endsAt      DateTime
+    member      Member  @relation(fields: [memberId], references: [id])
+    memberId    String
 }
