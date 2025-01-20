@@ -26,7 +26,7 @@ export const authOptions: AuthOptions = {
       }
       return true;
     },
-    async jwt({ token, account }) {
+    async jwt({ token }) {
       const userFromDb = await prisma.user.findFirst({
         where: { email: token.email as string },
       });
