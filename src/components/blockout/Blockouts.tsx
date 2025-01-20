@@ -1,17 +1,13 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { createUseStyles } from "react-jss";
 import { Button, Spinner } from "components";
 import {
   getBlockoutDatesForPerson,
-  getPlansBetween,
-  getTeamMembersForPlan,
 } from "clients/serviceClient";
 import {
-  IPlan,
   ITeam,
   ITeamMemberWithBlockoutDates,
   ITeamWithBlockouts,
-  PlanTeamMembersMap,
 } from "types";
 import { TeamBlockouts } from "./TeamBlockouts";
 import { DateInput } from "components/_basis/DateInput";
@@ -20,6 +16,7 @@ import { getEndOfSemester, getStartOfSemester } from "utils/dates";
 import { useTeams } from "hooks/useTeams";
 import { PlanSummary } from "./PlanSummary";
 import { exportBlockoutsToExcel } from "utils/exportBlockoutsToExcel";
+import { usePlans } from "hooks/usePlans";
 
 const useStyles = createUseStyles<
   "wrapper" | "dateInput" | "blockoutContainer",
@@ -48,13 +45,17 @@ export const Blockouts = () => {
   const [teamsWithBlockouts, setTeamsWithBlockouts] = useState<
     ITeamWithBlockouts[]
   >([]);
-  const [plans, setPlans] = useState<IPlan[]>([]);
-  const [planTeamMembers, setPlanTeamMembers] = useState<PlanTeamMembersMap>(
-    {}
-  );
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(getStartOfSemester());
   const [endDate, setEndDate] = useState(getEndOfSemester());
+  const {
+    plans,
+    planTeamMembers,
+    loading: plansLoading,
+    loadPlans,
+  } = usePlans(startDate, endDate);
+
+  const isLoading = loading || plansLoading;
 
   const getBlockoutsForTeam = async (
     team: ITeam
@@ -91,27 +92,6 @@ export const Blockouts = () => {
     updateBlockouts();
   }, [teams, plans]);
 
-  const loadPlans = useCallback(async () => {
-    setLoading(true);
-    const planResult = await getPlansBetween(startDate, endDate);
-    const planTeamMembersResult = (
-      await Promise.all(
-        planResult.map(async (plan) => ({
-          planId: plan.id,
-          teamMembers: await getTeamMembersForPlan(plan.id),
-        }))
-      )
-    ).reduce((dict, plan) => {
-      dict[plan.planId] = plan.teamMembers;
-      return dict;
-    }, {} as PlanTeamMembersMap);
-    setPlans(planResult);
-    setPlanTeamMembers(planTeamMembersResult);
-  }, [endDate, startDate]);
-  useEffect(() => {
-    loadPlans();
-  }, [loadPlans]);
-
   const classes = useStyles({ numberOfPlans: plans.length });
   return (
     <div className={classes.wrapper}>
@@ -120,7 +100,7 @@ export const Blockouts = () => {
         <DateInput value={endDate} onChange={(date) => setEndDate(date)} />
         <Button onClick={() => loadPlans()}>Hent oversikt</Button>
 
-        {!loading && (
+        {!isLoading && (
           <Button
             onClick={() => exportBlockoutsToExcel(teamsWithBlockouts, plans)}
           >
@@ -128,8 +108,8 @@ export const Blockouts = () => {
           </Button>
         )}
       </div>
-      {loading && <Spinner />}
-      {!loading && (
+      {isLoading && <Spinner />}
+      {!isLoading && (
         <>
           <p style={{ maxWidth: "80ch" }}>
             <strong>Obs.:</strong> Planning Center har ikke noe team-konsept, så
