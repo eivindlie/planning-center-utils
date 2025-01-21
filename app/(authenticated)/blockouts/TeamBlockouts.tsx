@@ -1,6 +1,7 @@
 import { Blockout, Member, Plan, Team } from "@prisma/client";
 import styles from "./TeamBlockouts.module.css";
 import { formatDate } from "@/utils/formatDate";
+import classNames from "classnames";
 type MemberWithBlockouts = Member & { blockouts: Blockout[] };
 type Props = {
   team: Team;
@@ -18,7 +19,10 @@ export const TeamBlockouts = ({ team, members, plans }: Props) => {
     }
   };
 
-  const getBlockoutDescription = (member: MemberWithBlockouts, date: Date): string => {
+  const getBlockoutDescription = (
+    member: MemberWithBlockouts,
+    date: Date
+  ): string => {
     const blockout = member.blockouts.find(
       (blockout) => blockout.startsAt <= date && date <= blockout.endsAt
     );
@@ -35,7 +39,10 @@ export const TeamBlockouts = ({ team, members, plans }: Props) => {
           <tr>
             <th></th>
             {plans.map((plan) => (
-              <th className={styles.dateCell} key={plan.id}>
+              <th
+                className={classNames(styles.cell, styles.dateCell)}
+                key={plan.id}
+              >
                 {formatDate(plan.date)}
               </th>
             ))}
@@ -44,14 +51,15 @@ export const TeamBlockouts = ({ team, members, plans }: Props) => {
         <tbody>
           {members.map((member) => (
             <tr key={member.id}>
-              <td>{member.name}</td>
+              <td className={styles.cell}>{member.name}</td>
               {plans.map((plan) => (
                 <td
                   key={plan.id}
-                  className={`${styles.blockoutCell} ${getBlockoutClass(
-                    member,
-                    plan.date
-                  )}`}
+                  className={classNames(
+                    styles.cell,
+                    styles.blockoutCell,
+                    getBlockoutClass(member, plan.date)
+                  )}
                   title={getBlockoutDescription(member, plan.date)}
                 ></td>
               ))}

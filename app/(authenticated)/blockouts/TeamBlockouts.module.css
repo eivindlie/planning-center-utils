@@ -1,24 +1,24 @@
 .table {
-    border-collapse: collapse;
+  border-collapse: collapse;
+}
 
-    th, td {
-        border: 1px solid white;
-        padding: 2px;
-    }
+.cell {
+  border: 1px solid white;
+  padding: 2px;
 }
 
 .dateCell {
-    writing-mode: vertical-rl;
-    padding: 2px;
-    width: 25px;
+  writing-mode: vertical-rl;
+  padding: 2px;
+  width: 25px;
 }
 
 .blockoutCell {
-    text-align: center;
-    vertical-align: middle;
-    width: 10px;
+  text-align: center;
+  vertical-align: middle;
+  width: 10px;
 }
 
 .blockedOut {
-    background-color: #f00;
+  background-color: #f00;
 }
