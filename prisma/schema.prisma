@@ -15,9 +15,10 @@ model Team {
 
 model Member {
     id          String  @default(cuid())    @id
-    pcId        String
+    pcId        String  @unique
     name        String
     team        Team?   @relation(fields: [teamId], references: [id])
+    isLeader    Boolean @default(false)
     teamId      String?
     blockouts   Blockout[]
     user        User?
@@ -25,7 +26,7 @@ model Member {
 
 model Blockout {
     id          String  @default(cuid())    @id
-    pcId        String
+    pcId        String  @unique
     reason      String?
     startsAt    DateTime
     endsAt      DateTime
@@ -35,7 +36,7 @@ model Blockout {
 
 model Plan {
     id          String  @default(cuid())    @id
-    pcId        String
+    pcId        String  @unique
     seriesTitle String
     title       String
     date        DateTime

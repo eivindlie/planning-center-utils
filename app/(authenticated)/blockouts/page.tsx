@@ -9,7 +9,17 @@ export default async function BlockoutPage() {
   const teams = await prisma.team.findMany();
   const members = await prisma.member.findMany({
     include: { blockouts: true },
+    orderBy: {
+      name: "asc",
+    },
   });
+  // members.sort((a, b) =>
+  //   a.isLeader && !b.isLeader
+  //     ? 1
+  //     : !a.isLeader && b.isLeader
+  //     ? -1
+  //     : a.name.localeCompare(b.name)
+  // );
   const plans = await prisma.plan.findMany({
     where: { date: { gte: startDate, lte: endDate } },
     orderBy: { date: "asc" },
