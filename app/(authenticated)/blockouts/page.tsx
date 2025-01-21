@@ -3,8 +3,8 @@ import { TeamBlockouts } from "./TeamBlockouts";
 import styles from "./page.module.css";
 
 export default async function BlockoutPage() {
-  const startDate = new Date(2025, 1, 1);
-  const endDate = new Date(2025, 6, 30);
+  const startDate = new Date(2025, 0, 1);
+  const endDate = new Date(2025, 5, 30);
 
   const teams = await prisma.team.findMany();
   const members = await prisma.member.findMany({
