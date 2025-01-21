@@ -22,12 +22,12 @@ const exportTeamMembers = async () => {
   }
 };
 
-const exportBlockouts = async () => {
+const exportBlockoutDates = async () => {
   console.log("Exporting blockouts");
   const members = await prisma.member.findMany();
   for (const member of members) {
-    console.log(`Exporting blockouts for ${member.name}`);
-    const result = await getPcEndpoint(`people/${member.pcId}/blockouts`);
+    console.log(`Exporting blockout dates for ${member.name}`);
+    const result = await getPcEndpoint(`people/${member.pcId}/blockout_dates`);
     for (const blockout of result.data) {
       const { id, attributes } = blockout;
       if (await prisma.blockout.findFirst({ where: { pcId: id as string } }))
@@ -75,5 +75,5 @@ const exportPlans = async () => {
 export const runExport = async () => {
   await exportPlans();
   await exportTeamMembers();
-  await exportBlockouts();
+  await exportBlockoutDates();
 };
