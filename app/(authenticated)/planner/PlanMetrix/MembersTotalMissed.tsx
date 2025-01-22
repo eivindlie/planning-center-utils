@@ -39,6 +39,14 @@ export const MembersTotalMissed = ({
   return (
     <div className={styles.container}>
       <h2>Antall ganger mistet per medlem</h2>
+      <p>
+        Totalt på tvers av team:{" "}
+        {teamMetrics.reduce(
+          (acc, tm) =>
+            acc + tm.memberMetrics.reduce((acc2, mm) => acc2 + mm.missed, 0),
+          0
+        )}
+      </p>
       {teamMetrics.length === 0 && (
         <p>Ingen medlemmer har mistet noen ganger 🤩</p>
       )}
@@ -60,6 +68,15 @@ export const MembersTotalMissed = ({
                     <TD>{member.missed}</TD>
                   </tr>
                 ))}
+                <tr className={styles.totalRow}>
+                  <TD>Totalt</TD>
+                  <TD>
+                    {team.memberMetrics.reduce(
+                      (acc, member) => acc + member.missed,
+                      0
+                    )}
+                  </TD>
+                </tr>
               </tbody>
             </>
           </Table>

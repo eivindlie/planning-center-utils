@@ -24,7 +24,6 @@ export const PlanMetrix = ({ members, plans, teams, teamOrder }: Props) => {
       />
       <TimesPerTeam teams={teams} teamOrder={teamOrder} />
       <AvgMembersMissing members={members} plans={plans} teams={teams} teamOrder={teamOrder} />
-      <TotalAbsences members={members} plans={plans} teamOrder={teamOrder} />
     </div>
   );
 };
