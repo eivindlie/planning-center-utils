@@ -2,9 +2,9 @@
 
 import { Plan, Team } from "@prisma/client";
 import { TeamSelectorList } from "./TeamSelectorList";
-import { useState } from "react";
 import { MemberWithBlockouts } from "@/types";
 import { PlanMetrix } from "./PlanMetrix/PlanMetrix";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 type Props = {
   plans: Plan[];
@@ -13,9 +13,26 @@ type Props = {
 };
 
 export const Planner = ({ members, plans, teams }: Props) => {
-  const [teamOrder, setTeamOrder] = useState<(string | undefined)[]>(
-    plans.map(() => undefined)
-  );
+  const params = useSearchParams();
+  const pathname = usePathname();
+
+  const teamOrderRaw = params.get("order")?.split(",") ?? [];
+  while (teamOrderRaw.length < plans.length) {
+    teamOrderRaw.push("-1");
+  }
+  const teamOrder = teamOrderRaw
+    .map((t) => parseInt(t))
+    .map((t) => (t === -1 ? undefined : teams[t].id));
+  const navigateToTeamOrder = (teamOrder: (string | undefined)[]) => {
+    const order = teamOrder
+      .map((t) =>
+        t === undefined
+          ? "-1"
+          : teams.findIndex((team) => team.id === t).toString()
+      )
+      .join(",");
+    window.history.pushState({}, "", `${pathname}?order=${encodeURIComponent(order)}`);
+  };
   return (
     <div>
       <TeamSelectorList
@@ -23,7 +40,7 @@ export const Planner = ({ members, plans, teams }: Props) => {
         plans={plans}
         teams={teams}
         teamOrder={teamOrder}
-        onChange={(teamOrder) => setTeamOrder(teamOrder)}
+        onChange={navigateToTeamOrder}
       />
       <PlanMetrix
         members={members}

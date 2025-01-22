@@ -13,7 +13,7 @@ export default async function PlannerPage() {
     },
     orderBy: { date: "asc" },
   });
-  const teams = await prisma.team.findMany();
+  const teams = await prisma.team.findMany({ orderBy: { id: "asc" } });
   const members = await prisma.member.findMany({
     include: { blockouts: true },
     orderBy: {
