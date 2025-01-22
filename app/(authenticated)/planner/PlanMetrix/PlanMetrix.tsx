@@ -3,6 +3,7 @@ import { Plan, Team } from "@prisma/client";
 import styles from "./PlanMetrix.module.css";
 import { MembersTotalMissed } from "./MembersTotalMissed";
 import { TimesPerTeam } from "./TimesPerTeam";
+import { AvgMembersMissing } from "./AvgMembersMissing";
 
 type Props = {
   plans: Plan[];
@@ -21,6 +22,7 @@ export const PlanMetrix = ({ members, plans, teams, teamOrder }: Props) => {
         teamOrder={teamOrder}
       />
       <TimesPerTeam teams={teams} teamOrder={teamOrder} />
+      <AvgMembersMissing members={members} plans={plans} teams={teams} teamOrder={teamOrder} />
     </div>
   );
 };
