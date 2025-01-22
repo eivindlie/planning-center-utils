@@ -87,8 +87,19 @@ const exportPlans = async () => {
   }
 };
 
+const addLogEntry = async () => {
+  console.log("Adding log entry for export");
+  await prisma.exportLog.create({
+    data: {
+      time: new Date(),
+    },
+  });
+}
+
 export const runExport = async () => {
   await exportPlans();
   await exportTeamMembers();
   await exportBlockoutDates();
+
+  await addLogEntry();
 };

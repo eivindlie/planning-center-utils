@@ -51,3 +51,8 @@ model User {
     memberId    String? @unique
     activated   Boolean @default(false)
 }
+
+model ExportLog {
+    id          String @default(cuid())     @id
+    time        DateTime
+}
