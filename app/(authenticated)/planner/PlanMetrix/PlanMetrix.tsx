@@ -2,6 +2,7 @@ import { MemberWithBlockouts } from "@/types";
 import { Plan, Team } from "@prisma/client";
 import styles from "./PlanMetrix.module.css";
 import { MembersTotalMissed } from "./MembersTotalMissed";
+import { TimesPerTeam } from "./TimesPerTeam";
 
 type Props = {
   plans: Plan[];
@@ -19,6 +20,7 @@ export const PlanMetrix = ({ members, plans, teams, teamOrder }: Props) => {
         teams={teams}
         teamOrder={teamOrder}
       />
+      <TimesPerTeam teams={teams} teamOrder={teamOrder} />
     </div>
   );
 };

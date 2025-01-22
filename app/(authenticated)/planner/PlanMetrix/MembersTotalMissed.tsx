@@ -1,6 +1,9 @@
 import { MemberWithBlockouts } from "@/types";
 import { Plan, Team } from "@prisma/client";
 import styles from "./MembersTotalMissed.module.css";
+import { Table } from "@/components/Table/Table";
+import { TD } from "@/components/Table/TD";
+import { TH } from "@/components/Table/TH";
 
 type Props = {
   members: MemberWithBlockouts[];
@@ -42,22 +45,24 @@ export const MembersTotalMissed = ({
       {teamMetrics.map((team) => (
         <div key={team.id}>
           <h3 className={styles.teamName}>{team.name}</h3>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th className={styles.cell}>Medlem</th>
-                <th className={styles.cell}>Antall ganger mistet</th>
-              </tr>
-            </thead>
-            <tbody>
-              {team.memberMetrics.map((member) => (
-                <tr key={member.name}>
-                  <td className={styles.cell}>{member.name}</td>
-                  <td className={styles.cell}>{member.missed}</td>
+          <Table>
+            <>
+              <thead>
+                <tr>
+                  <TH>Medlem</TH>
+                  <TH>Antall ganger mistet</TH>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {team.memberMetrics.map((member) => (
+                  <tr key={member.name}>
+                    <TD>{member.name}</TD>
+                    <TD>{member.missed}</TD>
+                  </tr>
+                ))}
+              </tbody>
+            </>
+          </Table>
         </div>
       ))}
     </div>
