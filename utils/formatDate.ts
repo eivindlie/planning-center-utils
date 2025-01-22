@@ -9,3 +9,11 @@ export const formatDate = (date: Date): string => {
     const formattedDate = dd + '.' + mm + '.' + yyyy;
     return formattedDate;
 };
+
+const formatTime = (date: Date): string => {
+    return date.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
+}
+
+export const formatDateTime = (date: Date): string => {
+    return `${formatDate(date)} ${formatTime(date)}`;
+}
