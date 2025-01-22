@@ -37,7 +37,7 @@ export const AvgMembersMissing = ({
     return {
       id: team.id,
       name: team.name,
-      avgMissing: totalMissing / missingForTeam.length,
+      avgMissing: totalMissing / Math.max(1, missingForTeam.length),
     };
   });
 
