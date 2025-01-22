@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/config";
 import styles from "./layout.module.css";
 import { Header } from "./Header";
+import { signOut } from "next-auth/react";
 
 export default async function AuthenticatedLayout({
   children,
@@ -18,6 +19,7 @@ export default async function AuthenticatedLayout({
           Ta kontakt med Eivind for å få aktivert brukeren din før du kan bruke
           systemet.
         </p>
+        <button onClick={() => signOut()}>Logg ut</button>
       </div>
     );
   }
