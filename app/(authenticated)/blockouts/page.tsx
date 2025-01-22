@@ -25,17 +25,24 @@ export default async function BlockoutPage() {
     orderBy: { date: "asc" },
   });
 
+  const grid = `max-content repeat(${plans.length}, minmax(30px, max-content))`;
+
   return (
     <div className={styles.container}>
       <h1>Blockouts</h1>
-      {teams.map((team) => (
-        <TeamBlockouts
-          key={team.id}
-          team={team}
-          members={members.filter((member) => member.teamId === team.id)}
-          plans={plans}
-        />
-      ))}
+      <div
+        className={styles.blockoutContainer}
+        style={{ gridTemplateColumns: grid }}
+      >
+        {teams.map((team) => (
+          <TeamBlockouts
+            key={team.id}
+            team={team}
+            members={members.filter((member) => member.teamId === team.id)}
+            plans={plans}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Blockout, Member, Plan, Team } from "@prisma/client";
 import styles from "./TeamBlockouts.module.css";
 import { formatDate } from "@/utils/formatDate";
 import classNames from "classnames";
+import { Fragment } from "react";
 type MemberWithBlockouts = Member & { blockouts: Blockout[] };
 type Props = {
   team: Team;
@@ -32,41 +33,37 @@ export const TeamBlockouts = ({ team, members, plans }: Props) => {
     return "";
   };
   return (
-    <div>
-      <h2>{team.name}</h2>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th></th>
+    <>
+      <h2 className={styles.title}>{team.name}</h2>
+      <>
+        <div></div>
+        {plans.map((plan) => (
+          <div
+            key={plan.id}
+            className={classNames(styles.dateCell, styles.cell)}
+          >
+            {formatDate(plan.date)}
+          </div>
+        ))}
+      </>
+
+      <>
+        {members.map((member) => (
+          <Fragment key={member.id}>
+            <div className={styles.cell}>{member.name}</div>
             {plans.map((plan) => (
-              <th
-                className={classNames(styles.cell, styles.dateCell)}
+              <div
                 key={plan.id}
-              >
-                {formatDate(plan.date)}
-              </th>
+                className={classNames(
+                  styles.cell,
+                  getBlockoutClass(member, plan.date)
+                )}
+                title={getBlockoutDescription(member, plan.date)}
+              ></div>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {members.map((member) => (
-            <tr key={member.id}>
-              <td className={styles.cell}>{member.name}</td>
-              {plans.map((plan) => (
-                <td
-                  key={plan.id}
-                  className={classNames(
-                    styles.cell,
-                    styles.blockoutCell,
-                    getBlockoutClass(member, plan.date)
-                  )}
-                  title={getBlockoutDescription(member, plan.date)}
-                ></td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </Fragment>
+        ))}
+      </>
+    </>
   );
 };
