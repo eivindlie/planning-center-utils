@@ -1,6 +1,7 @@
 import prisma from "@/prisma/client";
 import { TeamBlockouts } from "./TeamBlockouts";
 import styles from "./page.module.css";
+import Link from "next/link";
 
 export default async function BlockoutPage() {
   const startDate = new Date(2025, 0, 1);
@@ -30,6 +31,7 @@ export default async function BlockoutPage() {
   return (
     <div className={styles.container}>
       <h1>Blockouts</h1>
+      <Link href="/planner">Gå til planlegger</Link>
       <div
         className={styles.blockoutContainer}
         style={{ gridTemplateColumns: grid }}
