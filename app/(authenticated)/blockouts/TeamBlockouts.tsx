@@ -10,12 +10,13 @@ type Props = {
   members: MemberWithBlockouts[];
 };
 export const TeamBlockouts = ({ team, members, plans }: Props) => {
+  const isBlockout = (member: MemberWithBlockouts, date: Date) => {
+    return member.blockouts.some(
+      (blockout) => blockout.startsAt <= date && date <= blockout.endsAt
+    );
+  };
   const getBlockoutClass = (member: MemberWithBlockouts, date: Date) => {
-    if (
-      member.blockouts.some(
-        (blockout) => blockout.startsAt <= date && date <= blockout.endsAt
-      )
-    ) {
+    if (isBlockout(member, date)) {
       return styles.blockedOut;
     }
   };
@@ -62,6 +63,17 @@ export const TeamBlockouts = ({ team, members, plans }: Props) => {
               ></div>
             ))}
           </Fragment>
+        ))}
+      </>
+      <>
+        <div className={styles.cell}>Totalt</div>
+        {plans.map((plan) => (
+          <div
+            key={plan.id}
+            className={classNames(styles.cell, styles.totalCell)}
+          >
+            {members.filter((member) => isBlockout(member, plan.date)).length}
+          </div>
         ))}
       </>
     </>

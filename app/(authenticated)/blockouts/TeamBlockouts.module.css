@@ -17,3 +17,8 @@
 .blockedOut {
   background-color: #f00;
 }
+
+.totalCell {
+  text-align: center;
+  padding: 5px;
+}
