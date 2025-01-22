@@ -4,7 +4,6 @@ import styles from "./PlanMetrix.module.css";
 import { MembersTotalMissed } from "./MembersTotalMissed";
 import { TimesPerTeam } from "./TimesPerTeam";
 import { AvgMembersMissing } from "./AvgMembersMissing";
-import { TotalAbsences } from "./TotalAbsences";
 
 type Props = {
   plans: Plan[];
