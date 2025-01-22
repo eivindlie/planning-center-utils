@@ -1,7 +1,7 @@
 import { Table } from "@/components/Table/Table";
 import { TD } from "@/components/Table/TD";
 import { TH } from "@/components/Table/TH";
-import { Team, Plan, Member } from "@prisma/client";
+import { Team } from "@prisma/client";
 
 type Props = {
   teams: Team[];

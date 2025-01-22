@@ -4,7 +4,7 @@ import { Plan, Team } from "@prisma/client";
 import { TeamSelectorList } from "./TeamSelectorList";
 import { MemberWithBlockouts } from "@/types";
 import { PlanMetrix } from "./PlanMetrix/PlanMetrix";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 type Props = {
   plans: Plan[];
