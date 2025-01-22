@@ -31,7 +31,7 @@ export const Planner = ({ members, plans, teams }: Props) => {
           : teams.findIndex((team) => team.id === t).toString()
       )
       .join(",");
-    window.history.pushState({}, "", `${pathname}?order=${encodeURIComponent(order)}`);
+    window.history.pushState({}, "", `${pathname}?order=${order}`);
   };
   return (
     <div>
