@@ -4,6 +4,7 @@ import { Plan, Team } from "@prisma/client";
 import { TeamSelectorList } from "./TeamSelectorList";
 import { useState } from "react";
 import { MemberWithBlockouts } from "@/types";
+import { PlanMetrix } from "./PlanMetrix/PlanMetrix";
 
 type Props = {
   plans: Plan[];
@@ -23,6 +24,12 @@ export const Planner = ({ members, plans, teams }: Props) => {
         teams={teams}
         teamOrder={teamOrder}
         onChange={(teamOrder) => setTeamOrder(teamOrder)}
+      />
+      <PlanMetrix
+        members={members}
+        plans={plans}
+        teams={teams}
+        teamOrder={teamOrder}
       />
     </div>
   );

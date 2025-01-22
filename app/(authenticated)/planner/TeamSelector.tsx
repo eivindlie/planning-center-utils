@@ -37,7 +37,7 @@ export const TeamSelector = ({
           onTeamSelected(team);
         }}
       >
-        <option value=""></option>
+        <option value="">(ingen)</option>
         {teams.map((team) => (
           <option key={team.id} value={team.id}>
             {team.name}

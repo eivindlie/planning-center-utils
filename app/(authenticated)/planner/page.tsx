@@ -11,6 +11,7 @@ export default async function PlannerPage() {
         lte: endDate,
       },
     },
+    orderBy: { date: "asc" },
   });
   const teams = await prisma.team.findMany();
   const members = await prisma.member.findMany({
