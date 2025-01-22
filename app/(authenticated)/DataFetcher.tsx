@@ -1,6 +1,7 @@
 "use client";
 import { runExport } from "@/export/export";
 import { useState, useEffect } from "react";
+import styles from "./DataFetcher.module.css";
 
 export const DataFetcher = ({ lastData }: { lastData: Date }) => {
   const [loadingData, setLoadingData] = useState(false);
@@ -21,12 +22,12 @@ export const DataFetcher = ({ lastData }: { lastData: Date }) => {
   }, []);
 
   if (loadingData) {
-    return <div>Henter nyeste data...</div>;
+    return <div className={styles.container}>Henter nyeste data...</div>;
   }
 
   if (hasLoadedData) {
     return (
-      <div>
+      <div className={styles.container}>
         <p>Oppdaterte data tilgjengelig</p>
         <button onClick={() => window.location.reload()}>
           Oppdater
@@ -36,7 +37,7 @@ export const DataFetcher = ({ lastData }: { lastData: Date }) => {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <button onClick={doDataFetch}>Hent nyeste data</button>
     </div>
   );
