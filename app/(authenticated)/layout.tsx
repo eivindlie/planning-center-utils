@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/config";
 import styles from "./layout.module.css";
-import { ExportStatus } from "./ExportStatus";
 import { Header } from "./Header";
 
 export default async function AuthenticatedLayout({

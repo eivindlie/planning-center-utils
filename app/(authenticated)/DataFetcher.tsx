@@ -29,7 +29,7 @@ export const DataFetcher = ({ lastData }: { lastData: Date }) => {
       <div>
         <p>Oppdaterte data tilgjengelig</p>
         <button onClick={() => window.location.reload()}>
-          Last inn på nytt
+          Oppdater
         </button>
       </div>
     );
