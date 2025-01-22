@@ -1,3 +1,4 @@
+"use server";
 import { LM_LOVSANG_TEAM_ID, LM_SERVICE_TYPE_ID } from "@/config/pcConstants";
 import { getPcEndpoint } from "./pcClient";
 import prisma from "@/prisma/client";
@@ -94,7 +95,7 @@ const addLogEntry = async () => {
       time: new Date(),
     },
   });
-}
+};
 
 export const runExport = async () => {
   await exportPlans();
