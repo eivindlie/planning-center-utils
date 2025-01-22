@@ -28,11 +28,10 @@ const exportBlockoutDates = async () => {
   for (const member of members) {
     console.log(`Exporting blockout dates for ${member.name}`);
     const result = await getPcEndpoint(`people/${member.pcId}/blockout_dates`);
+    await prisma.blockout.deleteMany({where: { memberId: member.id }});
     for (const blockout of result.data) {
       const { id, attributes } = blockout;
-      if (await prisma.blockout.findFirst({ where: { pcId: id as string } }))
-        continue;
-
+      
       await prisma.blockout.create({
         data: {
           member: {
