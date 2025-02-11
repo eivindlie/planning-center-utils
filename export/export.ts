@@ -98,9 +98,11 @@ const addLogEntry = async () => {
 };
 
 export const runExport = async () => {
+  const startTime = new Date();
   await exportPlans();
   await exportTeamMembers();
   await exportBlockoutDates();
 
   await addLogEntry();
+  console.log(`Export completed in ${new Date().getTime() - startTime.getTime()}ms`);
 };
